@@ -1,0 +1,8 @@
+.reviews{
+    width: 100%;
+    min-height: 200px;
+}
+.form-container input, .form-container textarea, .form-container select{
+    margin-left: 15px 15px 15px 15px;
+    border-radius: 5;
+}

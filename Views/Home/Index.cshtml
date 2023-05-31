@@ -1,0 +1,55 @@
+﻿@model List<MovieModel>
+
+<link rel="stylesheet" href="~/css/home.css">
+
+<div class="banner" style="background-image: url('assets/images/movies/1.jpg')">
+    <div class="banner_contents">
+        <h1 class="banner_title">
+            The Glory
+        </h1>
+        <div class="banner_buttons">
+            <button class="banner_button" style="background-color: red;">Play</button>
+            <button class="banner_button">My List</button>
+        </div>
+
+        <p class="banner_desc">
+            After a childhood marked by pain and violence, a woman puts a carefully planned revenge scheme in motion.
+        </p>
+    </div>
+
+    <div class="banner_fadeBottom"></div>
+</div>
+
+
+
+@* Top picks *@
+
+<div class="top_picks_for_you">
+    <h2>Top picks for you</h2>
+
+    <div class="mini_movie_cards_wrapper">
+
+
+        @foreach (var movie in Model)
+        {
+            <div class="movie-card">
+            <div class="movie-card-header">
+                <button class="favorite-button">
+                    <img src="assets/images/icons/heart.png" alt="Heart" width="24" height="24">
+                </button>
+            </div>
+            <div class="movie-card-body">
+                <h3 class="movie-card-name">@movie.Name</h3>
+                <div class="play_rating_buttons">
+                    <button class="play-button">Play</button>
+                    <span class="rating">4.5 &#9733;</span>
+                </div>
+            </div>
+        </div>
+        }
+
+        @* Movie card *@
+        
+
+    </div>
+</div>

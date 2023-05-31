@@ -1,0 +1,5 @@
+//run these following commands before running the project on a new machine.
+
+
+dotnet add package Npgsql --version 7.0.4
+dotnet add package Font.Awesome

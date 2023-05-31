@@ -1,0 +1,71 @@
+.movie-card {
+    width: 220px;
+    height: 300px;
+    background-image: url('https://images.pexels.com/photos/15360894/pexels-photo-15360894/free-photo-of-woman-standing-on-the-beach.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-size: cover;
+    position: relative;
+    margin: 10px;
+  }
+
+  .movie-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+  }
+  
+  .movie-card-header {
+    position: absolute;
+    top: 30px;
+    right: 10px;
+  }
+  
+  .favorite-button {
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .movie-card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 10px;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .movie-card-name {
+    font-size: 24px;
+    position: absolute;
+    bottom: 70px;
+  }
+  
+  .play-button {
+    width: 100px;
+    border: 0;
+    border-radius: 8px;
+    background-color: rgb(206, 19, 19);
+    color: #ffffff;
+    padding: 5px 10px;
+    margin-top: 10px;
+
+  }
+  
+  .rating {
+    margin-top: 19px;
+    margin-left: 15px;
+  }
+  
+  .play_rating_buttons{
+    display: flex;
+    position: absolute;
+    bottom: 30px;
+  }
