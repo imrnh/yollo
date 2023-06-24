@@ -38,11 +38,11 @@ public class AdminController : Controller
     public IActionResult AddPublisher([FromBody] PublisherInputModel model)
     {
         if (!ModelState.IsValid)
-        {
             return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
-        }
-
-        new ACreatePublisher().InsertPublisher(model.Name);
+        
+        FunctionResponse response = new ACreatePublisher().InsertPublisher(model.Name);
+        if (!response.status)
+            return Json(new HttpResponse(401, response.value).toJson());
 
         return Json(new HttpResponse(200, "Publisher '" + model.Name + "' added succesfully").toJson());
     }
