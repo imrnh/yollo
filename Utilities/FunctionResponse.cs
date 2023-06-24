@@ -1,6 +1,8 @@
 public class FunctionResponse{
     public bool status{get; set;}
     public dynamic value {get; set;}
+    
+    public bool IsSuccess(){return this.status;}
 
     public FunctionResponse(){
 

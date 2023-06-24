@@ -57,6 +57,11 @@ public class Startup
             endpoints.MapControllerRoute(
                 name: "admin",
                 pattern: "{controller=Admin}/{action=Dashboard}");
+
+            endpoints.MapControllerRoute(
+                name: "auth",
+                pattern: "{controller=Auth}/{action=Signup}"
+            );
         });
     }
 }
