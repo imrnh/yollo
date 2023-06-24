@@ -43,6 +43,7 @@ public class AdminController : Controller
 
 
     [HttpPost]
+    [Authorize(Roles = "admin")]
     public IActionResult AddGenre([FromBody] GenreInputModel model)
     {
         if (!ModelState.IsValid)
@@ -57,6 +58,7 @@ public class AdminController : Controller
 
 
     [HttpPost]
+    [Authorize(Roles = "admin")]
     public IActionResult AddPublisher([FromBody] PublisherInputModel model)
     {
         if (!ModelState.IsValid)
@@ -71,6 +73,7 @@ public class AdminController : Controller
 
 
     [HttpPost]
+    [Authorize(Roles = "admin")]
     public IActionResult AddMovieOrSeries([FromBody] MovieInputModel model)
     {
 
@@ -99,6 +102,7 @@ public class AdminController : Controller
 
 
     [HttpPost]
+    [Authorize(Roles = "admin")]
     public IActionResult MovieGenres([FromBody] MovieIdInpModel model)
     {
         if (!ModelState.IsValid)
@@ -112,6 +116,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = "admin")]
     public IActionResult MoviePublishers([FromBody] MovieIdInpModel model)
     {
         if (!ModelState.IsValid)
