@@ -15,8 +15,26 @@ public class AdminController : Controller
 
     public IActionResult Dashboard()
     {
-        return View();
+        return Json(new {controller_name="Admin"});
+        // return View();
     }
+
+    [HttpPost]
+    public IActionResult AddGenre([FromBody] GenreInputModel model)
+    {
+        // Check if the model state is valid
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        // Pass the name value to the InsertGenre method
+        ACreateGenreAndPublisher.InsertGenre(model.Name);
+
+        // Return a success response
+        return Ok("Genre added successfully");
+    }
+
 
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

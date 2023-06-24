@@ -1,3 +1,8 @@
+/*
+    - Do not delete 
+    this will load all the genres for the navigation bar.
+*/
+
 public class LoadGenresController
 {
     private readonly NetflixDbAccessModel _dbContext;

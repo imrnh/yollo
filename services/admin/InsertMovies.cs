@@ -2,10 +2,9 @@ using Npgsql;
 using DotNetEnv;
 using System;
 
-public class AAddMovies
+public class ACreateMovies
 {
-
-    public void InsertMovie(string title, string description, DateTime publishedAt, int ageLimit, string bannerUrl, string[] movieFiles, int numberOfEpisodes, bool isSeries)
+    public static void InsertMovie(string title, string description, DateTime publishedAt, int ageLimit, string bannerUrl, string[] movieFiles, int numberOfEpisodes, bool isSeries)
     {
         DotNetEnv.Env.Load();
         string _connectionString = Env.GetString("CONNECTION_STRING");

@@ -17,13 +17,15 @@ public class HomeController : Controller
     {
         ReadMoviesService readMoviesService = new ReadMoviesService();
         List<MovieModel> movies = readMoviesService.ReadMovies(6);
-
-        return View(movies);
+        
+        
+        return Json(new {all_movies=movies});
+        // return View(movies);
     }
 
     public IActionResult Privacy()
     {
-        return View();
+        return Json(new {foo="bar", baz="Blech"});
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

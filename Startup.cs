@@ -27,7 +27,7 @@ public class Startup
         {
             endpoints.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}");
             endpoints.MapControllerRoute(
             name: "admin",
             pattern: "{controller=Admin}/{action=Dashboard}");
