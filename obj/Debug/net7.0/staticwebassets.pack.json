@@ -1,355 +1,355 @@
 {
   "Files": [
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/obj/Debug/net7.0/scopedcss/projectbundle/Netflix.bundle.scp.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/obj/Debug/net7.0/scopedcss/projectbundle/Netflix.bundle.scp.css",
       "PackagePath": "staticwebassets/Netflix.bundle.scp.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/335303228_2103501693190731_3188269873831537477_n.jpg",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/335303228_2103501693190731_3188269873831537477_n.jpg",
       "PackagePath": "staticwebassets/assets/images/335303228_2103501693190731_3188269873831537477_n.jpg"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/boxshot.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/boxshot.png",
       "PackagePath": "staticwebassets/assets/images/boxshot.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/device-pile-in.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/device-pile-in.png",
       "PackagePath": "staticwebassets/assets/images/device-pile-in.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/download-icon.gif",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/download-icon.gif",
       "PackagePath": "staticwebassets/assets/images/download-icon.gif"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/favicon-32x32.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/favicon-32x32.png",
       "PackagePath": "staticwebassets/assets/images/favicon-32x32.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/favicon.ico",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/favicon.ico",
       "PackagePath": "staticwebassets/assets/images/favicon.ico"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/favicon_netflix.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/favicon_netflix.png",
       "PackagePath": "staticwebassets/assets/images/favicon_netflix.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/icons/heart-empty.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/icons/heart-empty.png",
       "PackagePath": "staticwebassets/assets/images/icons/heart-empty.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/icons/heart.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/icons/heart.png",
       "PackagePath": "staticwebassets/assets/images/icons/heart.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/icons/man.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/icons/man.png",
       "PackagePath": "staticwebassets/assets/images/icons/man.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/kid.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/kid.png",
       "PackagePath": "staticwebassets/assets/images/kid.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/mobile-0819.jpg",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/mobile-0819.jpg",
       "PackagePath": "staticwebassets/assets/images/mobile-0819.jpg"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/movies/1.jpg",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/movies/1.jpg",
       "PackagePath": "staticwebassets/assets/images/movies/1.jpg"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/movies/movie_mini_1.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/movies/movie_mini_1.png",
       "PackagePath": "staticwebassets/assets/images/movies/movie_mini_1.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/netflix title logo svg.svg",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/netflix title logo svg.svg",
       "PackagePath": "staticwebassets/assets/images/netflix title logo svg.svg"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/netflix title logo.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/netflix title logo.png",
       "PackagePath": "staticwebassets/assets/images/netflix title logo.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/netflix-logo-0.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/netflix-logo-0.png",
       "PackagePath": "staticwebassets/assets/images/netflix-logo-0.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/images/user-32.png",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/images/user-32.png",
       "PackagePath": "staticwebassets/assets/images/user-32.png"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/videos/abc.mp4",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/videos/abc.mp4",
       "PackagePath": "staticwebassets/assets/videos/abc.mp4"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/assets/videos/video-devices-in.m4v",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/assets/videos/video-devices-in.m4v",
       "PackagePath": "staticwebassets/assets/videos/video-devices-in.m4v"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/css/admin/dashboard.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/css/admin/dashboard.css",
       "PackagePath": "staticwebassets/css/admin/dashboard.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/css/home.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/css/home.css",
       "PackagePath": "staticwebassets/css/home.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/css/login_styles.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/css/login_styles.css",
       "PackagePath": "staticwebassets/css/login_styles.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/css/movie.card.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/css/movie.card.css",
       "PackagePath": "staticwebassets/css/movie.card.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/css/navbar.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/css/navbar.css",
       "PackagePath": "staticwebassets/css/navbar.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/css/site.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/css/site.css",
       "PackagePath": "staticwebassets/css/site.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/css/styles.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/css/styles.css",
       "PackagePath": "staticwebassets/css/styles.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/favicon.ico",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/favicon.ico",
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/js/index.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/js/index.js",
       "PackagePath": "staticwebassets/js/index.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/js/site.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/LICENSE",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/LICENSE",
       "PackagePath": "staticwebassets/lib/bootstrap"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.min.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.min.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.min.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.min.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.min.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.min.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.min.css"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.js.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.js.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.min.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.min.js.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.js",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.js.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.min.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
       "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.min.js.map"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt",
       "PackagePath": "staticwebassets/lib/jquery-validation-unobtrusive/LICENSE.txt"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "PackagePath": "staticwebassets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "PackagePath": "staticwebassets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery-validation/LICENSE.md",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery-validation/LICENSE.md",
       "PackagePath": "staticwebassets/lib/jquery-validation/LICENSE.md"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery-validation/dist/additional-methods.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery-validation/dist/additional-methods.js",
       "PackagePath": "staticwebassets/lib/jquery-validation/dist/additional-methods.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
       "PackagePath": "staticwebassets/lib/jquery-validation/dist/additional-methods.min.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery-validation/dist/jquery.validate.js",
       "PackagePath": "staticwebassets/lib/jquery-validation/dist/jquery.validate.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "PackagePath": "staticwebassets/lib/jquery-validation/dist/jquery.validate.min.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery/LICENSE.txt",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery/LICENSE.txt",
       "PackagePath": "staticwebassets/lib/jquery/LICENSE.txt"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery/dist/jquery.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery/dist/jquery.js",
       "PackagePath": "staticwebassets/lib/jquery/dist/jquery.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery/dist/jquery.min.js",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery/dist/jquery.min.js",
       "PackagePath": "staticwebassets/lib/jquery/dist/jquery.min.js"
     },
     {
-      "Id": "/media/sugarcat/Space/Academic Projects/Netflix/wwwroot/lib/jquery/dist/jquery.min.map",
+      "Id": "/home/ubuntu/Desktop/Netflix/wwwroot/lib/jquery/dist/jquery.min.map",
       "PackagePath": "staticwebassets/lib/jquery/dist/jquery.min.map"
     },
     {

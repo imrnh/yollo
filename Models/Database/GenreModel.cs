@@ -1,9 +1,4 @@
 public class GenereModel{
-    
-    public GenereModel(){
-
-    }
-
     public GenereModel(int id, string name){
         this.Id = id;
         this.Name = name;

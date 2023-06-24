@@ -15,8 +15,8 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        NetflixDbAccessModel _dbmodel = new NetflixDbAccessModel();
-        List<MovieModel> movies = _dbmodel.ReadMovies(6);
+        ReadMoviesService readMoviesService = new ReadMoviesService();
+        List<MovieModel> movies = readMoviesService.ReadMovies(6);
 
         return View(movies);
     }
