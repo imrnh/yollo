@@ -16,21 +16,23 @@ public class AdminController : Controller
     public IActionResult Dashboard()
     {
         return Json(new { controller_name = "Admin" });
-        // return View();
     }
+
 
     [HttpPost]
     public IActionResult AddGenre([FromBody] GenreInputModel model)
     {
 
         if (!ModelState.IsValid)
-        {
             return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
-        }
+        
+        FunctionResponse response = new ACreateGenre().InsertGenre(model.Name);
+        if (!response.status)
+            return Json(new HttpResponse(401, response.value).toJson());
 
-        new ACreateGenre().InsertGenre(model.Name);
         return Json(new HttpResponse(200, "Genre '" + model.Name + "' added succesfully").toJson());
     }
+    
 
     [HttpPost]
     public IActionResult AddPublisher([FromBody] PublisherInputModel model)

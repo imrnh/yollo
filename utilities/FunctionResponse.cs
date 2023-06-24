@@ -1,16 +1,12 @@
 public class FunctionResponse{
     public bool status{get; set;}
-    public dynamic message {get; set;}
+    public dynamic value {get; set;}
 
     public FunctionResponse(){
 
     }
-    public FunctionResponse(bool status, dynamic message){
-        this.message = message;
+    public FunctionResponse(bool status, dynamic value){
+        this.value = value;
         this.status = status;
-    }
-
-    public Object toJson(){
-        return new {status_code=this.status, message = this.message};
     }
 }
