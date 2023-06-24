@@ -28,7 +28,7 @@ public class AdminController : Controller
             return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
         }
 
-        ACreateGenre.InsertGenre(model.Name);
+        new ACreateGenre().InsertGenre(model.Name);
         return Json(new HttpResponse(200, "Genre '" + model.Name + "' added succesfully").toJson());
     }
 
@@ -40,9 +40,9 @@ public class AdminController : Controller
             return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
         }
 
-        ACreatePublisher.InsertPublisher(model.Name);
+        new ACreatePublisher().InsertPublisher(model.Name);
 
-        return Json(new HttpResponse(200, "Publisher '" + model.Name + "' added succesfully" ).toJson());
+        return Json(new HttpResponse(200, "Publisher '" + model.Name + "' added succesfully").toJson());
     }
 
 

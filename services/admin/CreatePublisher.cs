@@ -4,9 +4,10 @@ using DotNetEnv;
 public class ACreatePublisher
 {
 
-    public static void InsertPublisher(string name)
+    private string _connectionString = Env.GetString("CONNECTION_STRING");
+    public void InsertPublisher(string name)
     {
-        string _connectionString = Env.GetString("CONNECTION_STRING");
+        
 
         using (var connection = new NpgsqlConnection(_connectionString))
         {
