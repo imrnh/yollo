@@ -4,3 +4,4 @@
 dotnet add package Npgsql --version 7.0.4
 dotnet add package Font.Awesome
 dotnet add package DotNetEnv --version 2.5.0
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 7.0.8

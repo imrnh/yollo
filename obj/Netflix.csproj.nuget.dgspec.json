@@ -46,6 +46,10 @@
               "target": "Package",
               "version": "[5.15.4, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[7.0.8, )"
+            },
             "Microsoft.Data.Sqlite": {
               "target": "Package",
               "version": "[7.0.5, )"

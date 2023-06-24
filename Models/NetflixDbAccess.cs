@@ -14,10 +14,10 @@ public class NetflixDbAccessModel
 
 
     //
-    public List<GenereModel> ReadGenres()
+    public List<GenreModel> ReadGenres()
     {
 
-        List<GenereModel> genres = new List<GenereModel>();
+        List<GenreModel> genres = new List<GenreModel>();
 
         using (var connection = new NpgsqlConnection(_connectionString))
         {
@@ -33,7 +33,7 @@ public class NetflixDbAccessModel
                         var id = reader.GetInt32(0);
                         var gname = reader.GetString(1);
 
-                        GenereModel gm = new GenereModel(id, gname);
+                        GenreModel gm = new GenreModel(id, gname);
                         genres.Add(gm);
                     }
                 }

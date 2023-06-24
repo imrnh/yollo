@@ -12,7 +12,7 @@ public class LoadGenresController
         _dbContext = dbContext;
     }
 
-    public List<GenereModel> GetAllGenres()
+    public List<GenreModel> GetAllGenres()
     {
         return _dbContext.ReadGenres().ToList();
     }

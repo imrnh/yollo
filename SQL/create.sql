@@ -12,19 +12,19 @@ create table users(
 
 create table genre(
 	id SERIAL,
-	name VARCHAR(50),
+	name VARCHAR(50) UNIQUE,
 	primary key(id)
 );
 
 create table publisher(
 	id SERIAL,
-	name VARCHAR(50),
+	name VARCHAR(50) UNIQUE,
 	primary key(id)
 );
 
 CREATE TABLE movie (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(50),
+    title VARCHAR(50) UNIQUE,
     description TEXT,
     published_at DATE,
     age_limit INTEGER, -- 14 means user must be atleast 14 yrs old to watch the movie
