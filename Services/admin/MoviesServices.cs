@@ -80,7 +80,7 @@ public class AMovieServices
                     {
                         command.ExecuteNonQuery();
                     }
-                   catch (PostgresException pgexp)
+                    catch (PostgresException pgexp)
                     {
                         return new FunctionResponse(false, pgexp.Message);
                     }
@@ -153,5 +153,88 @@ public class AMovieServices
 
             connection.Close();
         }
+    }
+
+
+
+    public FunctionResponse GetGenresByMovieId(int movieId)
+    {
+        List<GenreModel> genres = new List<GenreModel>();
+
+        using (var connection = new NpgsqlConnection(this._connectionString))
+        {
+            connection.Open();
+
+            try
+            {
+                using (var command = new NpgsqlCommand("SELECT g.id, g.name FROM genre g INNER JOIN movie_genres mg ON g.id = mg.genre_id WHERE mg.movie_id = @movieId", connection))
+                {
+                    command.Parameters.AddWithValue("movieId", movieId);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int genreId = Convert.ToInt32(reader["id"]);
+                            string genreName = Convert.ToString(reader["name"]);
+
+                            GenreModel genre = new GenreModel(genreId, genreName);
+                            genres.Add(genre);
+                        }
+                    }
+                }
+            }
+            catch (PostgresException pgexp)
+            {
+                return new FunctionResponse(false, pgexp.MessageText);
+            }
+            catch (Exception e)
+            {
+                return new FunctionResponse(false, e.Message);
+            }
+        }
+
+        return new FunctionResponse(true, genres);
+    }
+
+    public FunctionResponse GetPublishersByMovieId(int movieId)
+    {
+        List<PublisherModel> publishers = new List<PublisherModel>();
+
+        using (var connection = new NpgsqlConnection(this._connectionString))
+        {
+            connection.Open();
+
+            try
+            {
+                using (var command = new NpgsqlCommand("SELECT p.id, p.name FROM publisher p INNER JOIN movie_publishers mp ON p.id = mp.publisher_id WHERE mp.movie_id = @movieId", connection))
+                {
+                    command.Parameters.AddWithValue("movieId", movieId);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int publisherId = Convert.ToInt32(reader["id"]);
+                            string publisherName = Convert.ToString(reader["name"]);
+
+                            PublisherModel publisher = new PublisherModel(publisherId, publisherName);
+                            publishers.Add(publisher);
+                        }
+                    }
+                }
+            }
+            catch (PostgresException pgexp)
+            {
+                return new FunctionResponse(false, pgexp.Message);
+            }
+
+            catch (Exception e)
+            {
+                return new FunctionResponse(false, e.Message);
+            }
+        }
+
+        return new FunctionResponse(true, publishers);
     }
 }

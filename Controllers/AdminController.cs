@@ -22,14 +22,14 @@ public class AdminController : Controller
 
     public IActionResult AllGenres()
     {
-        List<GenereModel> genres = new AGenreServices().GetAllGenres();
-        return Json(new { all_genres = genres});
+        List<GenreModel> genres = new AGenreServices().GetAllGenres();
+        return Json(new { all_genres = genres });
     }
 
     public IActionResult AllPublishers()
     {
         List<PublisherModel> publishers = new APublisherServices().GetAllPublishers();
-        return Json(new { all_publishers = publishers});
+        return Json(new { all_publishers = publishers });
     }
 
 
@@ -62,7 +62,7 @@ public class AdminController : Controller
     }
 
 
-     [HttpPost]
+    [HttpPost]
     public IActionResult AddMovieOrSeries([FromBody] MovieInputModel model)
     {
 
@@ -87,6 +87,35 @@ public class AdminController : Controller
 
         return Json(new HttpResponse(200, "New movie named '" + model.Title + "' added succesfully").toJson());
     }
+
+
+
+    [HttpPost]
+    public IActionResult MovieGenres([FromBody] MovieIdInpModel model)
+    {
+        if (!ModelState.IsValid)
+            return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
+
+        FunctionResponse response = new AMovieServices().GetGenresByMovieId(model.MovieId);
+        if (!response.status)
+            return Json(new HttpResponse(401, response.value).toJson());
+
+        return Json(new { genres = response.value }); //response contain the value.
+    }
+
+    [HttpPost]
+    public IActionResult MoviePublishers([FromBody] MovieIdInpModel model)
+    {
+        if (!ModelState.IsValid)
+            return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
+
+        FunctionResponse response = new AMovieServices().GetPublishersByMovieId(model.MovieId);
+        if (!response.status)
+            return Json(new HttpResponse(401, response.value).toJson());
+
+        return Json(new { publishers = response.value }); //response contain the value.
+    }
+
 
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -11,9 +11,9 @@ public class AGenreServices
         this._connectionString = Env.GetString("CONNECTION_STRING");
     }
 
-    public List<GenereModel> GetAllGenres()
+    public List<GenreModel> GetAllGenres()
     {
-        List<GenereModel> genres = new List<GenereModel>();
+        List<GenreModel> genres = new List<GenreModel>();
 
         using (var connection = new NpgsqlConnection(this._connectionString))
         {
@@ -30,7 +30,7 @@ public class AGenreServices
 
                         
 
-                        GenereModel genre = new GenereModel(Id, Name);
+                        GenreModel genre = new GenreModel(Id, Name);
                         genres.Add(genre);
                     }
                 }

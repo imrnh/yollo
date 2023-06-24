@@ -1,5 +1,5 @@
-public class GenereModel{
-    public GenereModel(int id, string name){
+public class GenreModel{
+    public GenreModel(int id, string name){
         this.Id = id;
         this.Name = name;
     }
