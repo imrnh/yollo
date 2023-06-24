@@ -15,15 +15,17 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        NetflixDbAccessModel _dbmodel = new NetflixDbAccessModel();
-        List<MovieModel> movies = _dbmodel.ReadMovies(6);
-
-        return View(movies);
+        ReadMoviesService readMoviesService = new ReadMoviesService();
+        List<MovieModel> movies = readMoviesService.ReadMovies(6);
+        
+        
+        return Json(new {all_movies=movies});
+        // return View(movies);
     }
 
     public IActionResult Privacy()
     {
-        return View();
+        return Json(new {foo="bar", baz="Blech"});
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

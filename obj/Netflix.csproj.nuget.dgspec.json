@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/media/sugarcat/Space/Academic Projects/Netflix/Netflix.csproj": {}
+    "/home/sugarcat/Desktop/Netflix/api/Netflix.csproj": {}
   },
   "projects": {
-    "/media/sugarcat/Space/Academic Projects/Netflix/Netflix.csproj": {
+    "/home/sugarcat/Desktop/Netflix/api/Netflix.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/media/sugarcat/Space/Academic Projects/Netflix/Netflix.csproj",
+        "projectUniqueName": "/home/sugarcat/Desktop/Netflix/api/Netflix.csproj",
         "projectName": "Netflix",
-        "projectPath": "/media/sugarcat/Space/Academic Projects/Netflix/Netflix.csproj",
+        "projectPath": "/home/sugarcat/Desktop/Netflix/api/Netflix.csproj",
         "packagesPath": "/home/sugarcat/.nuget/packages/",
-        "outputPath": "/media/sugarcat/Space/Academic Projects/Netflix/obj/",
+        "outputPath": "/home/sugarcat/Desktop/Netflix/api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/sugarcat/.nuget/NuGet/NuGet.Config"
@@ -38,6 +38,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "DotNetEnv": {
+              "target": "Package",
+              "version": "[2.5.0, )"
+            },
             "Font.Awesome": {
               "target": "Package",
               "version": "[5.15.4, )"
@@ -70,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.105/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.107/RuntimeIdentifierGraph.json"
         }
       }
     }

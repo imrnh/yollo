@@ -15,7 +15,34 @@ public class AdminController : Controller
 
     public IActionResult Dashboard()
     {
-        return View();
+        return Json(new { controller_name = "Admin" });
+        // return View();
+    }
+
+    [HttpPost]
+    public IActionResult AddGenre([FromBody] GenreInputModel model)
+    {
+
+        if (!ModelState.IsValid)
+        {
+            return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
+        }
+
+        new ACreateGenre().InsertGenre(model.Name);
+        return Json(new HttpResponse(200, "Genre '" + model.Name + "' added succesfully").toJson());
+    }
+
+    [HttpPost]
+    public IActionResult AddPublisher([FromBody] PublisherInputModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
+        }
+
+        new ACreatePublisher().InsertPublisher(model.Name);
+
+        return Json(new HttpResponse(200, "Publisher '" + model.Name + "' added succesfully").toJson());
     }
 
 
