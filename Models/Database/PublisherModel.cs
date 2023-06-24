@@ -3,8 +3,8 @@ public class PublisherModel{
     public string name {get; set;}
     public int founding_year {get; set;}
 
-    public PublisherModel(string name, int founding_year){
+    public PublisherModel(int id, string name){
         this.name = name;
-        this.founding_year = founding_year;
+        this.id = id;
     }
 }

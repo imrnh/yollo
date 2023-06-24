@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Netflix.Models;
 
 namespace Netflix.Controllers;
@@ -19,32 +20,72 @@ public class AdminController : Controller
     }
 
 
+    public IActionResult AllGenres()
+    {
+        List<GenereModel> genres = new AGenreServices().GetAllGenres();
+        return Json(new { all_genres = genres});
+    }
+
+    public IActionResult AllPublishers()
+    {
+        List<PublisherModel> publishers = new APublisherServices().GetAllPublishers();
+        return Json(new { all_publishers = publishers});
+    }
+
+
     [HttpPost]
     public IActionResult AddGenre([FromBody] GenreInputModel model)
     {
 
         if (!ModelState.IsValid)
             return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
-        
-        FunctionResponse response = new ACreateGenre().InsertGenre(model.Name);
+
+        FunctionResponse response = new AGenreServices().InsertGenre(model.Name);
         if (!response.status)
             return Json(new HttpResponse(401, response.value).toJson());
 
         return Json(new HttpResponse(200, "Genre '" + model.Name + "' added succesfully").toJson());
     }
-    
+
 
     [HttpPost]
     public IActionResult AddPublisher([FromBody] PublisherInputModel model)
     {
         if (!ModelState.IsValid)
             return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
-        
-        FunctionResponse response = new ACreatePublisher().InsertPublisher(model.Name);
+
+        FunctionResponse response = new APublisherServices().InsertPublisher(model.Name);
         if (!response.status)
             return Json(new HttpResponse(401, response.value).toJson());
 
         return Json(new HttpResponse(200, "Publisher '" + model.Name + "' added succesfully").toJson());
+    }
+
+
+     [HttpPost]
+    public IActionResult AddMovieOrSeries([FromBody] MovieInputModel model)
+    {
+
+
+        if (!ModelState.IsValid)
+            return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
+
+        FunctionResponse response = new AMovieServices().InsertMovie(
+            model.Title,
+            model.Description,
+            model.Genres,
+            model.Publishers,
+            model.PublishedAt,
+            model.AgeLimit,
+            model.BannerUrl,
+            model.MovieFiles,
+            model.NoOfEpisodes,
+            model.IsSeries
+        );
+        if (!response.status)
+            return Json(new HttpResponse(401, response.value).toJson());
+
+        return Json(new HttpResponse(200, "New movie named '" + model.Title + "' added succesfully").toJson());
     }
 
 
