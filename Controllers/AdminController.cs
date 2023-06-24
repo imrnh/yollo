@@ -1,6 +1,10 @@
 using System.Diagnostics;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
+
 using Netflix.Models;
 
 namespace Netflix.Controllers;
@@ -9,21 +13,53 @@ public class AdminController : Controller
 {
     private readonly ILogger<AdminController> _logger;
 
+    private string GenerateJSONWebToken(string username, bool isAdmin)
+    {
+        var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("yollo@yollo87787878"));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[] {
+        new Claim("Issuer", "yollo"),
+        new Claim(ClaimTypes.Name, username),
+        new Claim(ClaimTypes.Role, isAdmin? "admin" : "user"),
+        new Claim(JwtRegisteredClaimNames.UniqueName, username)
+    };
+
+
+        var token = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken("yollo", "yollo",
+            claims, expires: DateTime.Now.AddDays(15),
+            signingCredentials: credentials);
+
+
+        return new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler().WriteToken(token);
+
+    }
+
+
     public AdminController(ILogger<AdminController> logger)
     {
         _logger = logger;
     }
 
+    [Authorize]
     public IActionResult Dashboard()
     {
         return Json(new { controller_name = "Admin" });
     }
 
 
+    public IActionResult GetToken()
+    {
+        return Json(new { token = GenerateJSONWebToken("imran", true)});
+    }
+
+
+
+    [Authorize(Roles = "admin")]
     public IActionResult AllGenres()
     {
         List<GenreModel> genres = new AGenreServices().GetAllGenres();
-        return Json(new { all_genres = genres });
+        return Json(new {all_genres = genres });
     }
 
     public IActionResult AllPublishers()

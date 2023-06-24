@@ -244,3 +244,10 @@
 /home/ubuntu/Desktop/Netflix/api/obj/Debug/net7.0/Netflix.pdb
 /home/ubuntu/Desktop/Netflix/api/obj/Debug/net7.0/Netflix.genruntimeconfig.cache
 /home/ubuntu/Desktop/Netflix/api/obj/Debug/net7.0/ref/Netflix.dll
+/home/sugarcat/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/sugarcat/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/sugarcat/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.Logging.dll
+/home/sugarcat/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.dll
+/home/sugarcat/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/home/sugarcat/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.Tokens.dll
+/home/sugarcat/Desktop/Netflix/api/bin/Debug/net7.0/System.IdentityModel.Tokens.Jwt.dll
