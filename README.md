@@ -12,18 +12,18 @@ A ott platform API with ASP
   - <i>req_body:</i>
 
   ```
-    {
-       "title": "Passengers 1",
-       "description": "During a voyage to a distant planet, Jim's hypersleep pod malfunctions which wakes him up. So, he and fellow passenger work together to prevent their spaceship from meeting with a disaster.",
-       "genres": [4,5],
-       "publishers": [7,12],
-       "published_at": "04/22/2017",
-       "agelimit": 14,
-       "bannerurl": "https://images.pexels.com/photos/828658/pexels-photo-828658.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-       "moviefiles": ["https://images.pexels.com/photos/828658/pexels-photo-828658.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"],
-       "noofepisods": 1,
-       "isseries": false
-   }
+      {
+        "title": "WALL-E",
+        "description": "A machine responsible for cleaning a waste-covered Earth meets another robot and falls in love with her. Together, they set out on a journey that will alter the fate of mankind.",
+        "genres": [1, 78],
+        "publishers": [14],
+        "publishedat": "2008-06-27",
+        "agelimit": 5,
+        "bannerurl": "https://images.pexels.com/photos/2103864/pexels-photo-2103864.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "moviefiles": ["https://youtu.be/CZ1CATNbXg0"],
+        "noofepisodes": 1,
+        "isseries": false
+    }
 ```
 
 **2. Create a new Genre**
