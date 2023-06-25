@@ -25,10 +25,13 @@ public class HomeController : Controller
         return Json(new {all_movies=movies});
     }
     
-    public IActionResult Movie(int movie)
+    public IActionResult Watch(string slug)
     {
         //fetch movie of that id.
-        return Json(new {data = movie});
+        FunctionResponse response = new ReadMoviesService().SingleMovie(slug);
+        if(!response.status)
+            return Json(new  HttpResponse(401, response.value).toJson());
+        return Json(new {movie = response.value});
     }
 
     public IActionResult Movies(int genre, int publisher, int age_limit)
