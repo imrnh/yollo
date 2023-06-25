@@ -24,7 +24,8 @@ create table publisher(
 
 CREATE TABLE movie (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(50) UNIQUE,
+    title VARCHAR(50),
+    movie_slug VARCHAR(100) UNIQUE,
     description TEXT,
     published_at DATE,
     age_limit INTEGER, -- 14 means user must be atleast 14 yrs old to watch the movie
