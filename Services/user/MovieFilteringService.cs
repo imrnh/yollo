@@ -14,26 +14,149 @@ public class MovieFilteringService
     public FunctionResponse FilterByGenre(int genre_id)
     {
         List<MovieModel> movies = new List<MovieModel>();
-        return new FunctionResponse(false, null);
+        
         
         using (var connection = new NpgsqlConnection(this.connectionString))
         {
             connection.Open();
-
-            using (var command = new NpgsqlCommand("SELECT * FROM movie_genres", connection))
+        
+            using (var command = new NpgsqlCommand("select * from movie where id = (select movie_id from movie_genres where genre_id = @GenreId)", connection))
             {
+                command.Parameters.AddWithValue("GenreId", genre_id);
                 using (var reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
+                    try
                     {
-                        int Id = Convert.ToInt32(reader["id"]);
-                        string Name = reader["name"].ToString();
+                        while (reader.Read())
+                        {
+                            int id = Convert.ToInt32(reader["id"]);
+                            string title = Convert.ToString(reader["title"]);
+                            string description = Convert.ToString(reader["description"]);
+                            string banner_url = Convert.ToString(reader["banner_url"]);
+                            List<string> movie_files = new List<string>((string[])reader["movie_files"]);
+                            bool isSeries = Convert.ToBoolean(reader["isseries"]);
+                            int age_limit = Convert.ToInt32(reader["age_limit"]);
+                            DateTime published_at = Convert.ToDateTime(reader["published_at"]);
+                            int no_of_eps = Convert.ToInt32(reader["no_of_episodes"]);
+                        
+                        
+                            //fetch all the genres of given movie.
+                            List<GenreModel> genres = new List<GenreModel>();
+                            List<int> genre_ids = new List<int>();
+                            FunctionResponse genre_response = new AMovieServices().GetGenresByMovieId(id);
+                            if (!genre_response.status)
+                                return new FunctionResponse(false, null);
 
-                        PublisherModel publisher = new PublisherModel(Id, Name);
-                        movies.Add(publisher);
+                            genres = genre_response.value;
+
+                            foreach (var gnr in genres)
+                            {
+                                genre_ids.Add(gnr.Id);
+                            }
+                        
+                            //fetch all the publishers of given movie.
+                            List<PublisherModel> publishers = new List<PublisherModel>();
+                            List<int> publishers_ids = new List<int>();
+                            FunctionResponse publishers_response = new AMovieServices().GetPublishersByMovieId(id);
+                            if (!publishers_response.status)
+                                return new FunctionResponse(false, null);
+
+                            publishers = publishers_response.value;
+                        
+                            foreach (var pbr in publishers)
+                            {
+                                publishers_ids.Add(pbr.id);
+                            }
+                        
+
+                            MovieModel movie = new MovieModel(id, title, description, genre_ids, publishers_ids, published_at, age_limit, banner_url, movie_files, no_of_eps, isSeries);
+                            movies.Add(movie);
+                        }
+                        return new FunctionResponse(true, movies);
+                    }
+                    catch (Exception e)
+                    {
+                        return new FunctionResponse(false, e.Message);
                     }
                 }
             }
         }
+        
+        return new FunctionResponse(false, null);
+    }
+    
+    
+    public FunctionResponse FilterByPublisher(int publisher_id)
+    {
+        List<MovieModel> movies = new List<MovieModel>();
+        
+        
+        using (var connection = new NpgsqlConnection(this.connectionString))
+        {
+            connection.Open();
+        
+            using (var command = new NpgsqlCommand("select * from movie where id = (select movie_id from movie_publishers where publisher_id = @PubId)", connection))
+            {
+                command.Parameters.AddWithValue("PubId", publisher_id);
+                using (var reader = command.ExecuteReader())
+                {
+                    try
+                    {
+                        while (reader.Read())
+                        {
+                            int id = Convert.ToInt32(reader["id"]);
+                            string title = Convert.ToString(reader["title"]);
+                            string description = Convert.ToString(reader["description"]);
+                            string banner_url = Convert.ToString(reader["banner_url"]);
+                            List<string> movie_files = new List<string>((string[])reader["movie_files"]);
+                            bool isSeries = Convert.ToBoolean(reader["isseries"]);
+                            int age_limit = Convert.ToInt32(reader["age_limit"]);
+                            DateTime published_at = Convert.ToDateTime(reader["published_at"]);
+                            int no_of_eps = Convert.ToInt32(reader["no_of_episodes"]);
+                        
+                        
+                            //fetch all the genres of given movie.
+                            List<GenreModel> genres = new List<GenreModel>();
+                            List<int> genre_ids = new List<int>();
+                            FunctionResponse genre_response = new AMovieServices().GetGenresByMovieId(id);
+                            if (!genre_response.status)
+                                return new FunctionResponse(false, null);
+
+                            genres = genre_response.value;
+
+                            foreach (var gnr in genres)
+                            {
+                                genre_ids.Add(gnr.Id);
+                            }
+                        
+                            //fetch all the publishers of given movie.
+                            List<PublisherModel> publishers = new List<PublisherModel>();
+                            List<int> publishers_ids = new List<int>();
+                            FunctionResponse publishers_response = new AMovieServices().GetPublishersByMovieId(id);
+                            if (!publishers_response.status)
+                                return new FunctionResponse(false, null);
+
+                            publishers = publishers_response.value;
+                        
+                            foreach (var pbr in publishers)
+                            {
+                                publishers_ids.Add(pbr.id);
+                            }
+                        
+
+                            MovieModel movie = new MovieModel(id, title, description, genre_ids, publishers_ids, published_at, age_limit, banner_url, movie_files, no_of_eps, isSeries);
+                            movies.Add(movie);
+                        }
+                        return new FunctionResponse(true, movies);
+                    }
+                    catch (Exception e)
+                    {
+                        return new FunctionResponse(false, e.Message);
+                    }
+                }
+            }
+        }
+        
+        return new FunctionResponse(false, null);
     }
 }

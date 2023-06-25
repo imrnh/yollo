@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Netflix.Models;
+using Netflix.Services.user;
 
 namespace Netflix.Controllers;
 
@@ -34,9 +35,9 @@ public class HomeController : Controller
         if (genre != 0 && publisher != 0)
             return Json(new { genre = genre, publisher = publisher });
         else if (genre != 0)
-            return Json(new { genre_id = genre });
+            return Json(new { movies = new MovieFilteringService().FilterByGenre(genre) });
         else if (publisher != 0)
-            return Json(new { publisher = publisher });
+            return Json(new { movies = new MovieFilteringService().FilterByPublisher(publisher) });
 
         return Json(new HttpResponse(401, "Invalid response").toJson());
     }
