@@ -21,10 +21,24 @@ public class HomeController : Controller
         ReadMoviesService readMoviesService = new ReadMoviesService();
         List<MovieModel> movies = readMoviesService.ReadMovies(6);
         
-        
         return Json(new {all_movies=movies});
     }
     
+
+
+
+    /*
+
+        - GET method
+
+        - for a given slug, this will search for a movie or a series to watch.
+        - if found anything, return a MovieModel.
+        - if found nothing, return empty array.
+
+
+    */
+
+
     public IActionResult Watch(string slug)
     {
         //fetch movie of that id.
@@ -34,6 +48,15 @@ public class HomeController : Controller
         return Json(new {movie = response.value});
     }
 
+
+
+    /*
+
+        - GET Method.
+        - Filter movie based on genre or publisher or age limit.
+    
+    
+    */
     public IActionResult Movies(int genre, int publisher, int age_limit)
     {
         List<MovieModel> filtered = new List<MovieModel>();
@@ -64,6 +87,44 @@ public class HomeController : Controller
             return Json(new { movies = new MovieFilteringService().FilterByPublisher(publisher) });
 
         return Json(new HttpResponse(401, "Invalid response").toJson());
+    }
+
+
+    /*
+        - search user to make friend.
+    */
+
+    public IActionResult SearchFollower(string email, string name){
+        if (email == null)
+            email = "";
+        if (name == null)
+            name = "";
+            
+        FunctionResponse response = new FriendService().SearchUser(email, name);
+        if(!response.status){
+            return Json(new HttpResponse(401, response.value).toJson());
+        }
+        return Json(new {users=response.value});
+    }
+
+
+    /*
+        - POST method.
+        -a user id will be passed.
+        - passed user will be then a follower of the current user.
+        - Current user can then check the follower's public contents.
+        - The user who is the 2nd user i.e. the person who is being followed will not see anything of the user-1.
+    */
+
+    [HttpPost]
+    public IActionResult MakeFollower([FromBody] FriendInputModel model)
+    {
+        if(!ModelState.IsValid)
+            return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
+
+        //make friend here
+       
+        return Json(new {users=""});
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
