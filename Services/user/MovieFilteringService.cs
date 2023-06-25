@@ -10,6 +10,25 @@ public class MovieFilteringService
         DotNetEnv.Env.Load();
         this.connectionString = Env.GetString("CONNECTION_STRING");
     }
+    
+    public static FunctionResponse GetCommonMovies(List<MovieModel> list1, List<MovieModel> list2)
+    {
+        List<MovieModel> commonMovies = new List<MovieModel>();
+
+        foreach (MovieModel movie1 in list1)
+        {
+            foreach (MovieModel movie2 in list2)
+            {
+                if (movie1.id == movie2.id)
+                {
+                    commonMovies.Add(movie1);
+                    break; // Found a common movie, move to the next movie in list1
+                }
+            }
+        }
+
+        return new FunctionResponse(true, commonMovies);
+    }
 
     public FunctionResponse FilterByGenre(int genre_id)
     {

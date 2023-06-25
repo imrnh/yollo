@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Netflix.Models;
 using Netflix.Services.user;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Netflix.Controllers;
 
@@ -33,7 +35,25 @@ public class HomeController : Controller
     {
         //fetch all the movies of that genre.
         if (genre != 0 && publisher != 0)
-            return Json(new { genre = genre, publisher = publisher });
+        {
+            List<MovieModel> filtered = new List<MovieModel>();
+            List<MovieModel> filterdByGenre = new List<MovieModel>();
+            List<MovieModel> filterdByPublishers = new List<MovieModel>();
+
+            FunctionResponse genre_resp = new MovieFilteringService().FilterByGenre(genre);
+            if (!genre_resp.status) //in-case of an error
+                return Json(new HttpResponse(401, genre_resp.value).toJson());
+            filterdByGenre = genre_resp.value;
+            
+            FunctionResponse publisher_resp = new MovieFilteringService().FilterByPublisher(publisher);
+            if (!publisher_resp.status) //in-case of an error
+                return Json(new HttpResponse(401, publisher_resp.value).toJson());
+            filterdByPublishers = publisher_resp.value;
+
+            filtered = MovieFilteringService.GetCommonMovies(filterdByGenre, filterdByPublishers).value;
+
+            return Json(new { movies = filtered });
+        }
         else if (genre != 0)
             return Json(new { movies = new MovieFilteringService().FilterByGenre(genre) });
         else if (publisher != 0)
