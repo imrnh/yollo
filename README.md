@@ -6,10 +6,10 @@ A ott platform API with ASP
 
 ### Admin
   **1. Create an user**
-    path: {{HOST}}/admin/addmovieorseries
-    request_type: POST
-    require_auth: Bearer
-    req_body: {
+    > path: {{HOST}}/admin/addmovieorseries
+    > request_type: POST
+    > require_auth: Bearer
+    > req_body: {
     "title": "Passengers 1",
     "description": "During a voyage to a distant planet, Jim's hypersleep pod malfunctions which wakes him up. So, he and fellow passenger work together to prevent their spaceship from meeting with a disaster.",
     "genres": [4,5],
