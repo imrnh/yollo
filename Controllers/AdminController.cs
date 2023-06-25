@@ -1,9 +1,6 @@
 using System.Diagnostics;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.IdentityModel.Tokens;
 
 using Netflix.Models;
 
@@ -12,9 +9,6 @@ namespace Netflix.Controllers;
 public class AdminController : Controller
 {
     private readonly ILogger<AdminController> _logger;
-
-    
-
 
     public AdminController(ILogger<AdminController> logger)
     {

@@ -32,7 +32,7 @@ public class AuthenticationService
 
 
                 command.Parameters.AddWithValue("email", email);
-                command.Parameters.AddWithValue("password", password);
+                command.Parameters.AddWithValue("password", password); //perform hash later. current hash function is not working properly.
                 command.Parameters.AddWithValue("fname", fname);
                 command.Parameters.AddWithValue("dob", dob);
 
@@ -92,15 +92,6 @@ public class AuthenticationService
                     return new FunctionResponse(false, e.Message);
                 }
 
-                // try
-                // {
-                //     command.ExecuteNonQuery();
-                //     return new FunctionResponse(true, "New user created");
-                // }
-                // catch (PostgresException pgexp)
-                // {
-                //     return new FunctionResponse(false, pgexp.MessageText);
-                // }
             }
             connection.Close();
         }

@@ -251,3 +251,10 @@
 /home/sugarcat/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/sugarcat/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.Tokens.dll
 /home/sugarcat/Desktop/Netflix/api/bin/Debug/net7.0/System.IdentityModel.Tokens.Jwt.dll
+/home/ubuntu/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/ubuntu/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/ubuntu/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.Logging.dll
+/home/ubuntu/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.dll
+/home/ubuntu/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/home/ubuntu/Desktop/Netflix/api/bin/Debug/net7.0/Microsoft.IdentityModel.Tokens.dll
+/home/ubuntu/Desktop/Netflix/api/bin/Debug/net7.0/System.IdentityModel.Tokens.Jwt.dll

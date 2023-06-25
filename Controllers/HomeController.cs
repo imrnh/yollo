@@ -20,12 +20,25 @@ public class HomeController : Controller
         
         
         return Json(new {all_movies=movies});
-        // return View(movies);
+    }
+    
+    public IActionResult Movie(int movie)
+    {
+        //fetch movie of that id.
+        return Json(new {data = movie});
     }
 
-    public IActionResult Privacy()
+    public IActionResult Movies(int genre, int publisher)
     {
-        return Json(new {foo="bar", baz="Blech"});
+        //fetch all the movies of that genre.
+        if (genre != 0 && publisher != 0)
+            return Json(new { genre = genre, publisher = publisher });
+        else if (genre != 0)
+            return Json(new { genre_id = genre });
+        else if (publisher != 0)
+            return Json(new { publisher = publisher });
+
+        return Json(new HttpResponse(401, "Invalid response").toJson());
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

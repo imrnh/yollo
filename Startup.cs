@@ -52,7 +52,7 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllerRoute(
-                name: "default",
+                name: "home",
                 pattern: "{controller=Home}/{action=Index}");
             endpoints.MapControllerRoute(
                 name: "admin",
