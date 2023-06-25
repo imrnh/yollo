@@ -4,6 +4,7 @@ using Netflix.Models;
 using Netflix.Services.user;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Netflix.Controllers;
 
@@ -20,10 +21,10 @@ public class HomeController : Controller
     {
         ReadMoviesService readMoviesService = new ReadMoviesService();
         List<MovieModel> movies = readMoviesService.ReadMovies(6);
-        
-        return Json(new {all_movies=movies});
+
+        return Json(new { all_movies = movies });
     }
-    
+
 
 
 
@@ -38,14 +39,14 @@ public class HomeController : Controller
 
     */
 
-
+    [Authorize(Roles = "user")]
     public IActionResult Watch(string slug)
     {
         //fetch movie of that id.
         FunctionResponse response = new ReadMoviesService().SingleMovie(slug);
-        if(!response.status)
-            return Json(new  HttpResponse(401, response.value).toJson());
-        return Json(new {movie = response.value});
+        if (!response.status)
+            return Json(new HttpResponse(401, response.value).toJson());
+        return Json(new { movie = response.value });
     }
 
 
@@ -57,10 +58,12 @@ public class HomeController : Controller
     
     
     */
+
+    [Authorize(Roles = "user")]
     public IActionResult Movies(int genre, int publisher, int age_limit)
     {
         List<MovieModel> filtered = new List<MovieModel>();
-        
+
         //fetch all the movies of that genre.
         if (genre != 0 && publisher != 0)
         {
@@ -71,7 +74,7 @@ public class HomeController : Controller
             if (!genre_resp.status) //in-case of an error
                 return Json(new HttpResponse(401, genre_resp.value).toJson());
             filterdByGenre = genre_resp.value;
-            
+
             FunctionResponse publisher_resp = new MovieFilteringService().FilterByPublisher(publisher);
             if (!publisher_resp.status) //in-case of an error
                 return Json(new HttpResponse(401, publisher_resp.value).toJson());
@@ -93,18 +96,20 @@ public class HomeController : Controller
     /*
         - search user to make friend.
     */
-
-    public IActionResult SearchFollower(string email, string name){
+    [Authorize(Roles = "user")]
+    public IActionResult SearchFollower(string email, string name)
+    {
         if (email == null)
             email = "";
         if (name == null)
             name = "";
-            
+
         FunctionResponse response = new FriendService().SearchUser(email, name);
-        if(!response.status){
+        if (!response.status)
+        {
             return Json(new HttpResponse(401, response.value).toJson());
         }
-        return Json(new {users=response.value});
+        return Json(new { users = response.value });
     }
 
 
@@ -117,19 +122,45 @@ public class HomeController : Controller
     */
 
     [HttpPost]
-    public IActionResult MakeFollower([FromBody] FriendInputModel model)
+    [Authorize(Roles = "user")]
+    public IActionResult MakeFollower([FromBody] FriendInputModel model, [FromHeader(Name = "Authorization")] string token)
     {
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
             return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
 
+
+        int my_id = MyIdFromToken(token);
+
         //make friend here
-       
-        return Json(new {users=""});
+        FunctionResponse response = new FriendService().MakeFriend(my_id, model.Id);
+
+        return Json(new HttpResponse(200, response.value));
     }
+
+    [Authorize(Roles = "user")]
+    public IActionResult LoadFriends([FromHeader(Name = "Authorization")] string token)
+    {
+        int my_id = MyIdFromToken(token);
+
+        FunctionResponse response = new FriendService().LoadFriend(my_id);
+        return Json(new { friends = response.value });
+    }
+
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    private int MyIdFromToken(string token)
+    {
+        string my_email = new AuthenticationService().GetEmailFromToken(token.Remove(0, 7)); //removing the prefix "Bearer " from the passed Authorization token.
+
+        FunctionResponse uid_resp = new AuthenticationService().GetUserIdFromEmail(my_email);
+        if (!uid_resp.status)
+            return -1;
+        return uid_resp.value;
     }
 }
