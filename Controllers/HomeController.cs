@@ -31,12 +31,13 @@ public class HomeController : Controller
         return Json(new {data = movie});
     }
 
-    public IActionResult Movies(int genre, int publisher)
+    public IActionResult Movies(int genre, int publisher, int age_limit)
     {
+        List<MovieModel> filtered = new List<MovieModel>();
+        
         //fetch all the movies of that genre.
         if (genre != 0 && publisher != 0)
         {
-            List<MovieModel> filtered = new List<MovieModel>();
             List<MovieModel> filterdByGenre = new List<MovieModel>();
             List<MovieModel> filterdByPublishers = new List<MovieModel>();
 
