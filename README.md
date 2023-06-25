@@ -59,6 +59,37 @@ A ott platform API with ASP
   - <i>request_type:</i>GET <br>
   - <i>require_auth:</i> Bearer <br>
 
+
+
+## Authentication - both admin and user level.
+  **1. Create an account**
+  - <i>path:</i> /auth/signup <br>
+  - <i>request_type:</i> POST <br>
+  - <i>require_auth:</i> Bearer <br>
+  - <i>req_body:</i>
+
+  ```
+     {
+        "email": "user2@gmail.com",
+        "password": "password123",
+        "fullName": "User Full name",
+        "dob": "2002-04-17"
+     }
+```
+
+
+  **1. Signin**
+  - <i>path:</i> /auth/signin <br>
+  - <i>request_type:</i> POST <br>
+  - <i>require_auth:</i> Bearer <br>
+  - <i>req_body:</i>
+
+  ```
+    {
+        "email": "admin@yollo.com",
+        "password": "admin_password"
+    }
+```
   
 
 ## Users.
