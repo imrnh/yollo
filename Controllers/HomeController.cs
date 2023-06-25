@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Netflix.Models;
+using Netflix.Services.user;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Netflix.Controllers;
 
@@ -20,12 +23,44 @@ public class HomeController : Controller
         
         
         return Json(new {all_movies=movies});
-        // return View(movies);
+    }
+    
+    public IActionResult Movie(int movie)
+    {
+        //fetch movie of that id.
+        return Json(new {data = movie});
     }
 
-    public IActionResult Privacy()
+    public IActionResult Movies(int genre, int publisher, int age_limit)
     {
-        return Json(new {foo="bar", baz="Blech"});
+        List<MovieModel> filtered = new List<MovieModel>();
+        
+        //fetch all the movies of that genre.
+        if (genre != 0 && publisher != 0)
+        {
+            List<MovieModel> filterdByGenre = new List<MovieModel>();
+            List<MovieModel> filterdByPublishers = new List<MovieModel>();
+
+            FunctionResponse genre_resp = new MovieFilteringService().FilterByGenre(genre);
+            if (!genre_resp.status) //in-case of an error
+                return Json(new HttpResponse(401, genre_resp.value).toJson());
+            filterdByGenre = genre_resp.value;
+            
+            FunctionResponse publisher_resp = new MovieFilteringService().FilterByPublisher(publisher);
+            if (!publisher_resp.status) //in-case of an error
+                return Json(new HttpResponse(401, publisher_resp.value).toJson());
+            filterdByPublishers = publisher_resp.value;
+
+            filtered = MovieFilteringService.GetCommonMovies(filterdByGenre, filterdByPublishers).value;
+
+            return Json(new { movies = filtered });
+        }
+        else if (genre != 0)
+            return Json(new { movies = new MovieFilteringService().FilterByGenre(genre) });
+        else if (publisher != 0)
+            return Json(new { movies = new MovieFilteringService().FilterByPublisher(publisher) });
+
+        return Json(new HttpResponse(401, "Invalid response").toJson());
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

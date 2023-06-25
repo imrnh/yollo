@@ -52,7 +52,7 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllerRoute(
-                name: "default",
+                name: "home",
                 pattern: "{controller=Home}/{action=Index}");
             endpoints.MapControllerRoute(
                 name: "admin",
@@ -64,11 +64,4 @@ public class Startup
             );
         });
     }
-}
-
-public class JwtSettings
-{
-    public string Issuer { get; set; }
-    public string Audience { get; set; }
-    public string Secret { get; set; }
 }

@@ -5618,19 +5618,19 @@
     ]
   },
   "packageFolders": {
-    "/home/sugarcat/.nuget/packages/": {}
+    "/home/ubuntu/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/sugarcat/Desktop/Netflix/api/Netflix.csproj",
+      "projectUniqueName": "/home/ubuntu/Desktop/Netflix/api/Netflix.csproj",
       "projectName": "Netflix",
-      "projectPath": "/home/sugarcat/Desktop/Netflix/api/Netflix.csproj",
-      "packagesPath": "/home/sugarcat/.nuget/packages/",
-      "outputPath": "/home/sugarcat/Desktop/Netflix/api/obj/",
+      "projectPath": "/home/ubuntu/Desktop/Netflix/api/Netflix.csproj",
+      "packagesPath": "/home/ubuntu/.nuget/packages/",
+      "outputPath": "/home/ubuntu/Desktop/Netflix/api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/sugarcat/.nuget/NuGet/NuGet.Config"
+        "/home/ubuntu/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -5694,7 +5694,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.107/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.108/RuntimeIdentifierGraph.json"
       }
     }
   }
