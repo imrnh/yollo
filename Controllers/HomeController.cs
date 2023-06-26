@@ -555,7 +555,7 @@ public class HomeController : Controller
     [Authorize(Roles = "user")]
     public IActionResult GetAllReviews(int mvi)
     {
-        return Json(new { reviews = new ReviewService().GetReviews(mvi) });
+        return Json(new { reviews = new ReviewService().GetReviews(mvi)});
     }
 
 
@@ -569,7 +569,7 @@ public class HomeController : Controller
     [Authorize(Roles = "user")]
     public IActionResult GetAvgRating(int mvi)
     {
-        return Json(new { ratings = new ReviewService().CalculateAverageRating(mvi) });
+        return Json(new { ratings = new ReviewService().CalculateAverageRating(mvi)});
     }
 
 
