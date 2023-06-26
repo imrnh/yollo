@@ -5,6 +5,7 @@ using Netflix.Services.user;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Netflix.Models.Inputs.users;
 
 namespace Netflix.Controllers;
 
@@ -25,6 +26,24 @@ public class HomeController : Controller
         return Json(new { all_movies = movies });
     }
 
+
+    /****
+
+    - POST method
+
+    - take user id from my token.
+    - pctrl param is boolean.
+
+
+    ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult ParentalControl([FromHeader(Name = "Authorization")] string token, [FromBody] ParentalControlInputModel pctrl_model)
+    {
+        int my_id = MyIdFromToken(token);
+        bool parentlToggled = new ParentalControlService().ToggleParentalControl(my_id, pctrl_model.Activate, pctrl_model.Password, pctrl_model.Agelimit, pctrl_model.Genres);
+        return Json(new {message= $"Parental control {(pctrl_model.Activate? true : false)}"});
+    }
 
 
     /****
@@ -66,7 +85,7 @@ public class HomeController : Controller
     {
         //fetch movie of that id.
         List<MovieModel> movies = new ReadMoviesService().SearchMovies(q);
-        
+
         return Json(new { movie = movies });
     }
 
