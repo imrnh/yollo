@@ -153,7 +153,7 @@ public class SavedMoviesService
                     command.Parameters.AddWithValue("movieId", movieId);
 
                     int rowsAffected = command.ExecuteNonQuery();
-                    return new FunctionResponse(true, "Movie Deleted");
+                    return new FunctionResponse(true, "Movie Deleted from watch history.");
                 }
             }
             catch (Exception e)
@@ -180,7 +180,7 @@ public class SavedMoviesService
                     command.Parameters.AddWithValue("movieId", movieId);
 
                     int rowsAffected = command.ExecuteNonQuery();
-                    return new FunctionResponse(true, "Movie deleted");
+                    return new FunctionResponse(true, "Movie deleted from watch later");
                 }
             }
             catch (Exception e)
