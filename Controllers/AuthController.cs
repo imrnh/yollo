@@ -62,6 +62,15 @@ public class AuthController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
+
+
+    /****
+    
+        ---- Generate web token.
+    
+    
+    *****/
+
     private string GenerateJSONWebToken(string username, bool isAdmin)
     {
         var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("yollo@yollo87787878"));
@@ -83,5 +92,9 @@ public class AuthController : Controller
         return new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler().WriteToken(token);
 
     }
+
+
+
+
 
 }

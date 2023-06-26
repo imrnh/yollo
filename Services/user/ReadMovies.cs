@@ -5,6 +5,104 @@ using DotNetEnv;
 public class ReadMoviesService
 {
 
+    private readonly string _connectionString;
+    public ReadMoviesService()
+    {
+        DotNetEnv.Env.Load();
+        _connectionString = Env.GetString("CONNECTION_STRING");
+    }
+
+
+    public FunctionResponse SingleMovie(string movie_slug = "", int movie_id = -1)
+    {
+        using (var connection = new NpgsqlConnection(this._connectionString))
+        {
+            connection.Open();
+
+            var query = "";
+
+            if (movie_id != -1)
+            {
+                query = "SELECT * FROM movie WHERE id = @MovieId";
+            }
+
+            else
+            {
+                query = "SELECT * FROM movie WHERE movie_slug = @MovieSlug";
+            }
+
+
+
+            using (var command = new NpgsqlCommand(query, connection))
+            {
+
+                if (movie_id != -1)
+                {
+                    command.Parameters.AddWithValue("@MovieId", movie_id);
+                }
+
+                else
+                {
+                    command.Parameters.AddWithValue("@MovieSlug", movie_slug);
+                }
+
+                
+
+                try
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+
+                            int Id = (int)reader["id"];
+                            string Title = (string)reader["title"];
+                            string MovieSlug = (string)reader["movie_slug"];
+                            string Description = (string)reader["description"];
+                            DateTime PublishedAt = (DateTime)reader["published_at"];
+                            int AgeLimit = (int)reader["age_limit"];
+                            string BannerUrl = (string)reader["banner_url"];
+                            List<string> movie_files = new List<string>((string[])reader["movie_files"]);
+                            int NumberOfEpisodes = (int)reader["no_of_episodes"];
+                            bool IsSeries = (bool)reader["isSeries"];
+
+                            //fetch genres
+                            List<GenreModel> genrs = new AMovieServices().GetGenresByMovieId(Id).value;
+                            List<int> genr_ids = new List<int>();
+
+                            foreach (var gnr in genrs)
+                            {
+                                genr_ids.Add(gnr.Id);
+                            }
+
+
+                            //fetch publishers.
+
+                            List<PublisherModel> publishers = new AMovieServices().GetPublishersByMovieId(Id).value;
+                            List<int> publisher_ids = new List<int>();
+
+                            foreach (var pbr in publishers)
+                            {
+                                publisher_ids.Add(pbr.id);
+                            }
+
+                            MovieModel movie = new MovieModel(Id, Title, Description, genr_ids, publisher_ids, PublishedAt, AgeLimit, BannerUrl, movie_files, NumberOfEpisodes, IsSeries);
+
+                            return new FunctionResponse(true, movie);
+
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    return new FunctionResponse(false, e.Message);
+                }
+
+                return new FunctionResponse(false, null);
+            }
+        }
+    }
+
     private List<int> FetchMovieGenres(int id, NpgsqlConnection connection)
     {
         string sql = "SELECT * FROM movie_genres WHERE movie_id = @movieId";
@@ -57,14 +155,13 @@ public class ReadMoviesService
     public List<MovieModel> ReadMovies(int limit = 100)
     {
 
-        DotNetEnv.Env.Load();
-        string _connectionString = Env.GetString("CONNECTION_STRING");
+
 
         List<MovieModel> movie_list = new List<MovieModel>();
 
         int _limit_counter = 1;
 
-        using (var connection = new NpgsqlConnection(_connectionString))
+        using (var connection = new NpgsqlConnection(this._connectionString))
         {
             connection.Open();
 

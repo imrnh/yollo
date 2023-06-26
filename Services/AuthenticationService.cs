@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Security.Cryptography;
 using DotNetEnv;
 using Npgsql;
@@ -79,7 +80,7 @@ public class AuthenticationService
 
                         //perform hashing later.
 
-                       bool hashCheckResult = hashed_password == user_input_password; // PasswordHasher.VerifyPassword(user_input_password, hashed_password);
+                        bool hashCheckResult = hashed_password == user_input_password; // PasswordHasher.VerifyPassword(user_input_password, hashed_password);
 
                         if (!hashCheckResult)
                             return new FunctionResponse(false, "Invalid password");
@@ -94,6 +95,57 @@ public class AuthenticationService
 
             }
             connection.Close();
+        }
+        return new FunctionResponse(false, null);
+    }
+
+    public string GetEmailFromToken(string token)
+    {
+        try
+        {
+            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+
+            var usernameClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name);
+            if (usernameClaim != null)
+            {
+                return usernameClaim.Value;
+            }
+        }
+        catch (Exception e)
+        {
+            return e.Message;
+        }
+
+        // Username claim not found in the token
+        return null;
+    }
+
+
+    public FunctionResponse GetUserIdFromEmail(string email)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string query = "SELECT id FROM users WHERE email = @Email";
+
+            using (var command = new NpgsqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("Email", email);
+
+                var result = command.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value)
+                {
+                    int userId = Convert.ToInt32(result);
+                    return new FunctionResponse(true, userId);
+                }
+                else
+                {
+                    return new FunctionResponse(false, null);
+                }
+            }
         }
         return new FunctionResponse(false, null);
     }

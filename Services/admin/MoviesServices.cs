@@ -99,13 +99,21 @@ public class AMovieServices
         {
             connection.Open();
 
-            string sql = @"INSERT INTO movie (title, description, published_at, age_limit, banner_url, movie_files, no_of_episodes, isSeries)
-                       VALUES (@Title, @Description, @PublishedAt, @AgeLimit, @BannerUrl, @MovieFiles, @NumberOfEpisodes, @IsSeries)";
+            string sql = @"INSERT INTO movie (title, description, movie_slug ,published_at, age_limit, banner_url, movie_files, no_of_episodes, isSeries)
+                       VALUES (@Title, @Description, @MovieSlug, @PublishedAt, @AgeLimit, @BannerUrl, @MovieFiles, @NumberOfEpisodes, @IsSeries)";
 
             using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
             {
+                //generate movie slug
+                FunctionResponse slug_response = this.GenerateMovieSlug(title);
+
+                if (!slug_response.status)
+                    return new FunctionResponse(false, "Error generating slug");
+                string movie_slug = slug_response.value;
+                
                 command.Parameters.AddWithValue("@Title", title);
                 command.Parameters.AddWithValue("@Description", description);
+                command.Parameters.AddWithValue("@MovieSlug", movie_slug);
                 command.Parameters.AddWithValue("@PublishedAt", publishedAt);
                 command.Parameters.AddWithValue("@AgeLimit", ageLimit);
                 command.Parameters.AddWithValue("@BannerUrl", bannerUrl);
@@ -236,5 +244,20 @@ public class AMovieServices
         }
 
         return new FunctionResponse(true, publishers);
+    }
+
+
+    private static Random random = new Random();
+
+    public static string RandomString(int length)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
+    }
+    public FunctionResponse GenerateMovieSlug(string title)
+    {
+        string slug = title + RandomString(10);
+        return new FunctionResponse(true, slug);
     }
 }

@@ -10,6 +10,8 @@ public class MovieFilteringService
         DotNetEnv.Env.Load();
         this.connectionString = Env.GetString("CONNECTION_STRING");
     }
+
+
     
     public static FunctionResponse GetCommonMovies(List<MovieModel> list1, List<MovieModel> list2)
     {
