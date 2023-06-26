@@ -27,8 +27,7 @@ public class HomeController : Controller
 
 
 
-
-    /*
+    /****
 
         - GET method
 
@@ -37,7 +36,7 @@ public class HomeController : Controller
         - if found nothing, return empty array.
 
 
-    */
+    ****/
 
     [Authorize(Roles = "user")]
     public IActionResult Watch(string slug)
@@ -51,13 +50,13 @@ public class HomeController : Controller
 
 
 
-    /*
+    /****
 
         - GET Method.
         - Filter movie based on genre or publisher or age limit.
     
     
-    */
+    ****/
 
     [Authorize(Roles = "user")]
     public IActionResult Movies(int genre, int publisher, int age_limit)
@@ -93,9 +92,18 @@ public class HomeController : Controller
     }
 
 
-    /*
+
+
+    /****
+
+        - GET Method.
         - search user to make friend.
-    */
+        - Searching through email or Full name.
+        - Email must match fully.
+        - Fullname match ar partial.
+
+    ****/
+    
     [Authorize(Roles = "user")]
     public IActionResult SearchFollower(string email, string name)
     {
@@ -113,13 +121,16 @@ public class HomeController : Controller
     }
 
 
-    /*
+
+
+
+    /****
         - POST method.
         -a user id will be passed.
         - passed user will be then a follower of the current user.
         - Current user can then check the follower's public contents.
         - The user who is the 2nd user i.e. the person who is being followed will not see anything of the user-1.
-    */
+    ****/
 
     [HttpPost]
     [Authorize(Roles = "user")]
@@ -137,6 +148,18 @@ public class HomeController : Controller
         return Json(new HttpResponse(200, response.value));
     }
 
+
+
+
+    /****
+    
+        - GET type.
+        - Must be signed in.
+        - Retrive `my_id` from the token.
+        - Get all the user_2 from friends table for user_1 = my_id.
+    
+    ****/
+
     [Authorize(Roles = "user")]
     public IActionResult LoadFriends([FromHeader(Name = "Authorization")] string token)
     {
@@ -148,11 +171,38 @@ public class HomeController : Controller
 
 
 
+    /***
+
+        ERROR Response model.
+
+    ***/
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+
+
+
+    /****
+    
+        - Utility function.
+
+        Token collection method as following:
+            - Read the header and get the value of the key `Authorization`.
+            
+
+        When the token is passed to this function, the token normally looks like this:
+            `Bearer<space> Actual token value`. Therefore, total 7 letter (`Bearer<space>`) should be removed from the prefix.
+
+        Then the user email is fetched from the token. Because the user_email is passed for the ClaimType.Names when creating the token.
+        Another service function convert the email into id from databse.
+
+        This function then return the id. If the token is invalid, it will return -1 as there will be no id to fetch. 
+    
+    ****/
 
     private int MyIdFromToken(string token)
     {
