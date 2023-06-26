@@ -95,6 +95,85 @@ public class HomeController : Controller
 
 
     /****
+        - GET method.
+        - Take no extra param. Just read the header for auth token.
+        - Generate id from token.
+        - Pass to a function of SavedMovieServies to get movie ids.
+        - Pass the ids to another function one by one to get movies.
+    
+    ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult WatchHistory([FromHeader(Name = "Authorization")] string token)
+    {
+        int my_id = MyIdFromToken(token);
+
+        List<int> movie_ids = new List<int>();
+        List<MovieModel> movies = new List<MovieModel>();
+
+        FunctionResponse load_resp = new SavedMoviesService().LoadWatchHistory(my_id);
+        if (!load_resp.status)
+            return Json(new HttpResponse(401, load_resp.value));
+
+        movie_ids = load_resp.value; //if no errror, get all the movie ids.
+
+        foreach (var mvid in movie_ids)
+        {
+            FunctionResponse mv_resp = new ReadMoviesService().SingleMovie("", mvid);
+            if (!mv_resp.status)
+                return Json(new HttpResponse(401, mv_resp.value).toJson());
+
+            movies.Add(mv_resp.value);
+        }
+
+
+        return Json(new { movies = movies, me = my_id });
+    }
+
+
+
+    /****
+       - GET method.
+       - Take no extra param. Just read the header for auth token.
+       - Generate id from token.
+       - Pass to a function of SavedMovieServies to get movie ids.
+       - Pass the ids to another function one by one to get movies.
+
+   ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult WatchLater([FromHeader(Name = "Authorization")] string token)
+    {
+        int my_id = MyIdFromToken(token);
+
+        List<int> movie_ids = new List<int>();
+        List<MovieModel> movies = new List<MovieModel>();
+
+        FunctionResponse load_resp = new SavedMoviesService().LoadWatchLater(my_id);
+        if (!load_resp.status)
+            return Json(new HttpResponse(401, load_resp.value));
+
+        movie_ids = load_resp.value; //if no errror, get all the movie ids.
+
+        foreach (var mvid in movie_ids)
+        {
+            FunctionResponse mv_resp = new ReadMoviesService().SingleMovie("", mvid);
+            if (!mv_resp.status)
+                return Json(new HttpResponse(401, mv_resp.value).toJson());
+
+            movies.Add(mv_resp.value);
+        }
+
+
+        return Json(new { movies = movies, me = my_id });
+    }
+
+
+
+
+
+
+    /****
 
         - GET Method.
         - search user to make friend.
@@ -103,7 +182,7 @@ public class HomeController : Controller
         - Fullname match ar partial.
 
     ****/
-    
+
     [Authorize(Roles = "user")]
     public IActionResult SearchFollower(string email, string name)
     {
@@ -150,6 +229,32 @@ public class HomeController : Controller
 
 
 
+    /****
+         - POST method.
+         - a user id will be passed.
+         - passed user will be removed from follower of the current user.
+         - Current user can no longer check the follower's public contents.
+     ****/
+
+    [HttpPost]
+    [Authorize(Roles = "user")]
+    public IActionResult RemoveFollower([FromBody] FriendInputModel model, [FromHeader(Name = "Authorization")] string token)
+    {
+        if (!ModelState.IsValid)
+            return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
+
+        int my_id = MyIdFromToken(token);
+
+        //make friend here
+        FunctionResponse response = new FriendService().RemoveFriend(my_id, model.Id);
+
+        return Json(new HttpResponse(200, response.value));
+    }
+
+
+
+
+
 
     /****
     
@@ -167,6 +272,92 @@ public class HomeController : Controller
 
         FunctionResponse response = new FriendService().LoadFriend(my_id);
         return Json(new { friends = response.value });
+    }
+
+
+
+
+    /****
+     - POST method.
+     - a user id will be passed.
+
+     -- Load watch history.
+
+        - The function will check the if wh_history of the user publicly visible.
+        - If visible, load them.
+
+     -- Then load watch later.
+        - Check wl_public for that user.
+        - If visible, load them.
+     - 
+ ****/
+
+    [HttpPost]
+    [Authorize(Roles = "user")]
+    public IActionResult FriendWatchHistoryNWatchLater([FromBody] FriendInputModel model, [FromHeader(Name = "Authorization")] string token)
+    {
+        if (!ModelState.IsValid)
+            return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
+
+
+        //make friend here
+        bool[] whl_state = new SavedMoviesService().WHL_Public(model.Id); // wh -> 0th index, wl -> 1st index
+
+        Dictionary<string, object> whl_obj = new Dictionary<string, object>();
+
+        //initialiing with empty array
+        whl_obj["watch_history"] = new List<MovieModel>();
+        whl_obj["watch_later"] = new List<MovieModel>();
+
+
+        if (whl_state[0])
+        { //if watch history visible.
+            List<int> movie_ids = new List<int>();
+            List<MovieModel> movies = new List<MovieModel>();
+            FunctionResponse load_resp = new SavedMoviesService().LoadWatchHistory(model.Id);
+            if (!load_resp.status)
+                return Json(new HttpResponse(401, load_resp.value));
+
+            movie_ids = load_resp.value; //if no errror, get all the movie ids.
+
+            foreach (var mvid in movie_ids)
+            {
+                FunctionResponse mv_resp = new ReadMoviesService().SingleMovie("", mvid);
+                if (!mv_resp.status)
+                    return Json(new HttpResponse(401, mv_resp.value).toJson());
+
+                movies.Add(mv_resp.value);
+            }
+            whl_obj["watch_history"] =  movies;
+        }
+
+        if (whl_state[1])
+        {// if watch later visible.
+
+
+            List<int> movie_ids = new List<int>();
+            List<MovieModel> movies = new List<MovieModel>();
+
+            FunctionResponse load_resp = new SavedMoviesService().LoadWatchLater(model.Id);
+            if (!load_resp.status)
+                return Json(new HttpResponse(401, load_resp.value));
+
+            movie_ids = load_resp.value; //if no errror, get all the movie ids.
+
+            foreach (var mvid in movie_ids)
+            {
+                FunctionResponse mv_resp = new ReadMoviesService().SingleMovie("", mvid);
+                if (!mv_resp.status)
+                    return Json(new HttpResponse(401, mv_resp.value).toJson());
+
+                movies.Add(mv_resp.value);
+            }
+
+            whl_obj["watch_later"] =  movies;
+        }
+
+
+        return Json(new {movies = whl_obj});
     }
 
 

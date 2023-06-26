@@ -13,57 +13,89 @@ public class ReadMoviesService
     }
 
 
-    public FunctionResponse SingleMovie(string movie_slug)
+    public FunctionResponse SingleMovie(string movie_slug = "", int movie_id = -1)
     {
         using (var connection = new NpgsqlConnection(this._connectionString))
         {
             connection.Open();
 
-            using (var command = new NpgsqlCommand("SELECT * FROM movie WHERE movie_slug = @MovieSlug", connection))
+            var query = "";
+
+            if (movie_id != -1)
             {
-                command.Parameters.AddWithValue("@MovieSlug", movie_slug);
+                query = "SELECT * FROM movie WHERE id = @MovieId";
+            }
 
-                using (var reader = command.ExecuteReader())
+            else
+            {
+                query = "SELECT * FROM movie WHERE movie_slug = @MovieSlug";
+            }
+
+
+
+            using (var command = new NpgsqlCommand(query, connection))
+            {
+
+                if (movie_id != -1)
                 {
-                    if (reader.Read())
+                    command.Parameters.AddWithValue("@MovieId", movie_id);
+                }
+
+                else
+                {
+                    command.Parameters.AddWithValue("@MovieSlug", movie_slug);
+                }
+
+                
+
+                try
+                {
+                    using (var reader = command.ExecuteReader())
                     {
-
-                        int Id = (int)reader["id"];
-                        string Title = (string)reader["title"];
-                        string MovieSlug = (string)reader["movie_slug"];
-                        string Description = (string)reader["description"];
-                        DateTime PublishedAt = (DateTime)reader["published_at"];
-                        int AgeLimit = (int)reader["age_limit"];
-                        string BannerUrl = (string)reader["banner_url"];
-                        List<string> movie_files = new List<string>((string[])reader["movie_files"]);
-                        int NumberOfEpisodes = (int)reader["no_of_episodes"];
-                        bool IsSeries = (bool)reader["isSeries"];
-
-                        //fetch genres
-                        List<GenreModel> genrs = new AMovieServices().GetGenresByMovieId(Id).value;
-                        List<int> genr_ids = new List<int>();
-
-                        foreach (var gnr in genrs)
+                        while (reader.Read())
                         {
-                            genr_ids.Add(gnr.Id);
+
+                            int Id = (int)reader["id"];
+                            string Title = (string)reader["title"];
+                            string MovieSlug = (string)reader["movie_slug"];
+                            string Description = (string)reader["description"];
+                            DateTime PublishedAt = (DateTime)reader["published_at"];
+                            int AgeLimit = (int)reader["age_limit"];
+                            string BannerUrl = (string)reader["banner_url"];
+                            List<string> movie_files = new List<string>((string[])reader["movie_files"]);
+                            int NumberOfEpisodes = (int)reader["no_of_episodes"];
+                            bool IsSeries = (bool)reader["isSeries"];
+
+                            //fetch genres
+                            List<GenreModel> genrs = new AMovieServices().GetGenresByMovieId(Id).value;
+                            List<int> genr_ids = new List<int>();
+
+                            foreach (var gnr in genrs)
+                            {
+                                genr_ids.Add(gnr.Id);
+                            }
+
+
+                            //fetch publishers.
+
+                            List<PublisherModel> publishers = new AMovieServices().GetPublishersByMovieId(Id).value;
+                            List<int> publisher_ids = new List<int>();
+
+                            foreach (var pbr in publishers)
+                            {
+                                publisher_ids.Add(pbr.id);
+                            }
+
+                            MovieModel movie = new MovieModel(Id, Title, Description, genr_ids, publisher_ids, PublishedAt, AgeLimit, BannerUrl, movie_files, NumberOfEpisodes, IsSeries);
+
+                            return new FunctionResponse(true, movie);
+
                         }
-
-
-                        //fetch publishers.
-
-                        List<PublisherModel> publishers = new AMovieServices().GetPublishersByMovieId(Id).value;
-                        List<int> publisher_ids = new List<int>();
-
-                        foreach (var pbr in publishers)
-                        {
-                            publisher_ids.Add(pbr.id);
-                        }
-
-                        MovieModel movie = new MovieModel(Id, Title, Description, genr_ids, publisher_ids, PublishedAt, AgeLimit, BannerUrl, movie_files, NumberOfEpisodes, IsSeries);
-
-                        return new FunctionResponse(true, movie);
-
                     }
+                }
+                catch (Exception e)
+                {
+                    return new FunctionResponse(false, e.Message);
                 }
 
                 return new FunctionResponse(false, null);

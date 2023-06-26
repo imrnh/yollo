@@ -121,7 +121,34 @@ public class FriendService
     }
 
 
-    List<User> GetUserDetails(List<int> ids)
+    public FunctionResponse RemoveFriend(int my_id, int friend_id)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "DELETE FROM friend WHERE user1 = @user1Id AND user2 = @user2Id";
+                using (var command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("user1Id", my_id);
+                    command.Parameters.AddWithValue("user2Id", friend_id);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    Console.WriteLine($"{rowsAffected} record(s) deleted.");
+                }
+                return new FunctionResponse(true, "Friend removed");
+            }
+        }catch(Exception e){
+            return new FunctionResponse(false, e.Message);
+        }
+    }
+
+
+
+
+    public List<User> GetUserDetails(List<int> ids)
     {
         List<User> users = new List<User>();
 
