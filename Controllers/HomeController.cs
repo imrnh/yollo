@@ -170,6 +170,111 @@ public class HomeController : Controller
 
 
 
+    /****
+
+        - POST method.
+        - Read my_id from authorization token.
+        - then read value from query param.
+    
+    ****/
+    [Authorize(Roles = "user")]
+    public IActionResult TriggerWhl([FromHeader(Name = "Authorization")] string token, string flag, bool b)
+    {
+        int int_flag = flag == "wh" ? 0 : (flag == "wl" ? 1 : -1); // if get -1, function does nothing.
+
+        int my_id = MyIdFromToken(token);
+
+        FunctionResponse response = new SavedMoviesService().Trigger_WHL_Public(my_id, b, int_flag);
+
+        return Json(new { response.value });
+    }
+
+
+
+
+    /****
+
+        - POST method.
+        - Read my_id from authorization token.
+        - then read movie id from body.
+        - Pass to function
+    
+    ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult AddMovieToWatchHistory([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
+    {
+        int my_id = MyIdFromToken(token);
+
+        FunctionResponse response = new SavedMoviesService().SavedMovieToWatchHistory(my_id, model.MovieId);
+
+        return Json(new { response.value });
+    }
+
+
+
+    /****
+
+        - POST method.
+        - Read my_id from authorization token.
+        - then read movie id from body.
+        - Pass to function
+    
+    ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult AddMovieToWatchLater([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
+    {
+        int my_id = MyIdFromToken(token);
+
+        FunctionResponse response = new SavedMoviesService().SavedMovieToWatchLater(my_id, model.MovieId);
+
+        return Json(new { response.value });
+    }
+
+
+
+
+        /****
+
+        - POST method.
+        - Read my_id from authorization token.
+        - then read movie id from body.
+        - Pass to function to delete
+    
+    ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult DeleteMovieFromWatchHistory([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
+    {
+        int my_id = MyIdFromToken(token);
+
+        FunctionResponse response = new SavedMoviesService().RemoveFromWatchHistory(my_id, model.MovieId);
+
+        return Json(new { response.value });
+    }
+
+
+
+        /****
+
+        - POST method.
+        - Read my_id from authorization token.
+        - then read movie id from body.
+        - Pass to function to delete from watch later
+    
+    ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult DeleteMovieFromWatchLater([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
+    {
+        int my_id = MyIdFromToken(token);
+
+        FunctionResponse response = new SavedMoviesService().RemoveFromWatchLater(my_id, model.MovieId);
+
+        return Json(new { response.value });
+    }
+
 
 
 
@@ -301,7 +406,7 @@ public class HomeController : Controller
 
 
         //make friend here
-        bool[] whl_state = new SavedMoviesService().WHL_Public(model.Id); // wh -> 0th index, wl -> 1st index
+        bool[] whl_state = new SavedMoviesService().Check_WHL_Public(model.Id); // wh -> 0th index, wl -> 1st index
 
         Dictionary<string, object> whl_obj = new Dictionary<string, object>();
 
@@ -328,7 +433,7 @@ public class HomeController : Controller
 
                 movies.Add(mv_resp.value);
             }
-            whl_obj["watch_history"] =  movies;
+            whl_obj["watch_history"] = movies;
         }
 
         if (whl_state[1])
@@ -353,11 +458,11 @@ public class HomeController : Controller
                 movies.Add(mv_resp.value);
             }
 
-            whl_obj["watch_later"] =  movies;
+            whl_obj["watch_later"] = movies;
         }
 
 
-        return Json(new {movies = whl_obj});
+        return Json(new { movies = whl_obj });
     }
 
 
