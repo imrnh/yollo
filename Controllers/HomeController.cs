@@ -5,6 +5,7 @@ using Netflix.Services.user;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Netflix.Models.Inputs.users;
 
 namespace Netflix.Controllers;
 
@@ -26,6 +27,27 @@ public class HomeController : Controller
     }
 
 
+    /****
+
+    - POST method
+
+    - take user id from my token.
+    - pctrl param is boolean.
+
+
+    ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult ParentalControl([FromHeader(Name = "Authorization")] string token, [FromBody] ParentalControlInputModel pctrl_model)
+    {
+        if(!ModelState.IsValid)
+            return Json(new { error = "Model state is not valid" });
+
+        int my_id = MyIdFromToken(token);
+        FunctionResponse message = new ParentalControlService().ToggleParentalControl(my_id, pctrl_model.Activate, pctrl_model.Password, pctrl_model.Agelimit, pctrl_model.Genres);
+        return Json(new {message= message.value});
+    }
+
 
     /****
 
@@ -39,15 +61,45 @@ public class HomeController : Controller
     ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult Watch(string slug)
+    public IActionResult Watch([FromHeader(Name = "Authorization")] string token,string slug)
     {
+        int my_id = MyIdFromToken(token);
+
         //fetch movie of that id.
         FunctionResponse response = new ReadMoviesService().SingleMovie(slug);
         if (!response.status)
             return Json(new HttpResponse(401, response.value).toJson());
-        return Json(new { movie = response.value });
+
+        FunctionResponse filter_response = new ParentalControlService().FilterWithParentalControl(response.value, my_id);
+        return Json(new { movie = filter_response.value });
     }
 
+
+
+    /****
+
+        - GET method
+
+        - for a given slug, this will search for a movie or a series to watch.
+        - if found anything, return a MovieModel.
+        - if found nothing, return empty array.
+
+
+    ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult SearchMovies([FromHeader(Name = "Authorization")] string token, string q)
+    {
+        int my_id = MyIdFromToken(token);
+        
+        //fetch movie of that id.
+        List<MovieModel> movies = new ReadMoviesService().SearchMovies(q);
+        FunctionResponse filtered_response =new ParentalControlService().FilterWithParentalControl(movies, my_id);
+
+        List<MovieModel> allowed_movies = filtered_response.value;
+
+        return Json(new { movie = allowed_movies });
+    }
 
 
     /****
@@ -235,14 +287,14 @@ public class HomeController : Controller
 
 
 
-        /****
+    /****
 
-        - POST method.
-        - Read my_id from authorization token.
-        - then read movie id from body.
-        - Pass to function to delete
-    
-    ****/
+    - POST method.
+    - Read my_id from authorization token.
+    - then read movie id from body.
+    - Pass to function to delete
+
+****/
 
     [Authorize(Roles = "user")]
     public IActionResult DeleteMovieFromWatchHistory([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
@@ -256,14 +308,14 @@ public class HomeController : Controller
 
 
 
-        /****
+    /****
 
-        - POST method.
-        - Read my_id from authorization token.
-        - then read movie id from body.
-        - Pass to function to delete from watch later
-    
-    ****/
+    - POST method.
+    - Read my_id from authorization token.
+    - then read movie id from body.
+    - Pass to function to delete from watch later
+
+****/
 
     [Authorize(Roles = "user")]
     public IActionResult DeleteMovieFromWatchLater([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)

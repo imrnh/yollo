@@ -46,7 +46,7 @@ public class ReadMoviesService
                     command.Parameters.AddWithValue("@MovieSlug", movie_slug);
                 }
 
-                
+
 
                 try
                 {
@@ -200,4 +200,39 @@ public class ReadMoviesService
 
         return movie_list;
     }
+
+
+
+    /***
+    
+        - Search movie.
+
+    ***/
+
+    public List<MovieModel> SearchMovies(string searchKeyword)
+    {
+        List<MovieModel> movies = new List<MovieModel>();
+        using (var connection = new NpgsqlConnection(this._connectionString))
+        {
+            connection.Open();
+
+            string query = "SELECT * FROM movie WHERE title ILIKE @searchKeyword";
+            using (var command = new NpgsqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("searchKeyword", $"%{searchKeyword}%");
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string movieSlug = Convert.ToString(reader["movie_slug"]);
+
+                        movies.Add(SingleMovie(movieSlug).value);
+                    }
+                }
+            }
+        }
+        return movies;
+    }
+
 }
