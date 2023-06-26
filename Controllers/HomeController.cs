@@ -52,6 +52,27 @@ public class HomeController : Controller
 
     /****
 
+        - GET method
+
+        - for a given slug, this will search for a movie or a series to watch.
+        - if found anything, return a MovieModel.
+        - if found nothing, return empty array.
+
+
+    ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult SearchMovies(string q)
+    {
+        //fetch movie of that id.
+        List<MovieModel> movies = new ReadMoviesService().SearchMovies(q);
+        
+        return Json(new { movie = movies });
+    }
+
+
+    /****
+
         - GET Method.
         - Filter movie based on genre or publisher or age limit.
     
@@ -235,14 +256,14 @@ public class HomeController : Controller
 
 
 
-        /****
+    /****
 
-        - POST method.
-        - Read my_id from authorization token.
-        - then read movie id from body.
-        - Pass to function to delete
-    
-    ****/
+    - POST method.
+    - Read my_id from authorization token.
+    - then read movie id from body.
+    - Pass to function to delete
+
+****/
 
     [Authorize(Roles = "user")]
     public IActionResult DeleteMovieFromWatchHistory([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
@@ -256,14 +277,14 @@ public class HomeController : Controller
 
 
 
-        /****
+    /****
 
-        - POST method.
-        - Read my_id from authorization token.
-        - then read movie id from body.
-        - Pass to function to delete from watch later
-    
-    ****/
+    - POST method.
+    - Read my_id from authorization token.
+    - then read movie id from body.
+    - Pass to function to delete from watch later
+
+****/
 
     [Authorize(Roles = "user")]
     public IActionResult DeleteMovieFromWatchLater([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
