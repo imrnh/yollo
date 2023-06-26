@@ -61,13 +61,17 @@ public class HomeController : Controller
     ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult Watch(string slug)
+    public IActionResult Watch([FromHeader(Name = "Authorization")] string token,string slug)
     {
+        int my_id = MyIdFromToken(token);
+
         //fetch movie of that id.
         FunctionResponse response = new ReadMoviesService().SingleMovie(slug);
         if (!response.status)
             return Json(new HttpResponse(401, response.value).toJson());
-        return Json(new { movie = response.value });
+
+        FunctionResponse filter_response = new ParentalControlService().FilterWithParentalControl(response.value, my_id);
+        return Json(new { movie = filter_response.value });
     }
 
 
@@ -84,12 +88,17 @@ public class HomeController : Controller
     ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult SearchMovies(string q)
+    public IActionResult SearchMovies([FromHeader(Name = "Authorization")] string token, string q)
     {
+        int my_id = MyIdFromToken(token);
+        
         //fetch movie of that id.
         List<MovieModel> movies = new ReadMoviesService().SearchMovies(q);
+        FunctionResponse filtered_response =new ParentalControlService().FilterWithParentalControl(movies, my_id);
 
-        return Json(new { movie = movies });
+        List<MovieModel> allowed_movies = filtered_response.value;
+
+        return Json(new { movie = allowed_movies });
     }
 
 

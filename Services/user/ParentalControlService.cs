@@ -183,4 +183,174 @@ public class ParentalControlService
         }
         return new FunctionResponse(false, "Some error we have no idea about but asp think it can access this area of the code. So I had to add this return statement.");
     }
+
+
+
+    /****
+    
+        - Read parental control age_limit
+    
+    *****/
+
+    public int ReadParentalControlAgeLimit(int userId)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(this.connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT age_limit FROM parental_control WHERE user_id = @userId";
+                using (var command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("userId", userId);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            int ageLimit = Convert.ToInt32(reader["age_limit"]);
+
+                            return ageLimit;
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+            return -1;
+        }
+
+        return -1;
+    }
+
+
+    public List<int> ReadParentalControlGenres(int userId)
+    {
+        List<int> allowedGenres = new List<int>();
+
+        try
+        {
+            using (var connection = new NpgsqlConnection(this.connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT genre_id FROM prntlctrl_allowed_genres WHERE user_id = @userId";
+                using (var command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("userId", userId);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int genreId = Convert.ToInt32(reader["genre_id"]);
+                            allowedGenres.Add(genreId);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+
+        return allowedGenres;
+    }
+
+
+
+    public bool CheckMovieGenres(List<int> allowedGenres, MovieModel movie)
+    {
+        foreach (int genreId in movie.genres)
+        {
+            if (!allowedGenres.Contains(genreId))
+            {
+                return false; // Genre not allowed
+            }
+        }
+
+        return true;
+    }
+
+    public bool CheckAgeLimit(int age_limit, MovieModel movie)
+    {
+        return movie.age_limit <= age_limit;
+    }
+
+
+    public bool CheckParentalControlActive(int userId)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT parental_control_active FROM users WHERE id = @userId";
+                using (var command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("userId", userId);
+
+                    var result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        return Convert.ToBoolean(result);
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+
+        return false; // Default value if no record found or error occurred
+    }
+
+
+    public FunctionResponse FilterWithParentalControl(List<MovieModel> moviesToFilter, int userId)
+    {
+        if (!this.CheckParentalControlActive(userId))
+            return new FunctionResponse(true, moviesToFilter);
+
+        List<MovieModel> filteredMovies = new List<MovieModel>();
+
+        int allowed_age_limit = this.ReadParentalControlAgeLimit(userId);
+        List<int> allowed_genres = this.ReadParentalControlGenres(userId);
+
+        foreach (var movie in moviesToFilter)
+        {
+            if (CheckMovieGenres(allowed_genres, movie) && CheckAgeLimit(allowed_age_limit, movie))
+            {
+                filteredMovies.Add(movie);
+            }
+        }
+
+        return new FunctionResponse(true, filteredMovies);
+    }
+
+
+    public FunctionResponse FilterWithParentalControl(MovieModel movie, int userId)
+    {
+        if (!this.CheckParentalControlActive(userId))
+            return new FunctionResponse(true, movie);
+
+        MovieModel filteredMovies;
+
+        int allowed_age_limit = this.ReadParentalControlAgeLimit(userId);
+        List<int> allowed_genres = this.ReadParentalControlGenres(userId);
+
+        if (CheckMovieGenres(allowed_genres, movie) && CheckAgeLimit(allowed_age_limit, movie))
+        {
+            filteredMovies = movie;
+            return new FunctionResponse(true, filteredMovies);
+        }
+        else
+        {
+            return new FunctionResponse(false, "Content blocked due to parental control.");
+        }
+    }
 }
