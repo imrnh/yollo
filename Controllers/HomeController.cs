@@ -40,12 +40,12 @@ public class HomeController : Controller
     [Authorize(Roles = "user")]
     public IActionResult ParentalControl([FromHeader(Name = "Authorization")] string token, [FromBody] ParentalControlInputModel pctrl_model)
     {
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
             return Json(new { error = "Model state is not valid" });
 
         int my_id = MyIdFromToken(token);
         FunctionResponse message = new ParentalControlService().ToggleParentalControl(my_id, pctrl_model.Activate, pctrl_model.Password, pctrl_model.Agelimit, pctrl_model.Genres);
-        return Json(new {message= message.value});
+        return Json(new { message = message.value });
     }
 
 
@@ -61,7 +61,7 @@ public class HomeController : Controller
     ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult Watch([FromHeader(Name = "Authorization")] string token,string slug)
+    public IActionResult Watch([FromHeader(Name = "Authorization")] string token, string slug)
     {
         int my_id = MyIdFromToken(token);
 
@@ -91,10 +91,10 @@ public class HomeController : Controller
     public IActionResult SearchMovies([FromHeader(Name = "Authorization")] string token, string q)
     {
         int my_id = MyIdFromToken(token);
-        
+
         //fetch movie of that id.
         List<MovieModel> movies = new ReadMoviesService().SearchMovies(q);
-        FunctionResponse filtered_response =new ParentalControlService().FilterWithParentalControl(movies, my_id);
+        FunctionResponse filtered_response = new ParentalControlService().FilterWithParentalControl(movies, my_id);
 
         List<MovieModel> allowed_movies = filtered_response.value;
 
@@ -435,19 +435,19 @@ public class HomeController : Controller
 
 
     /****
-     - POST method.
-     - a user id will be passed.
+        - POST method.
+        - a user id will be passed.
 
-     -- Load watch history.
+        -- Load watch history.
 
-        - The function will check the if wh_history of the user publicly visible.
-        - If visible, load them.
+            - The function will check the if wh_history of the user publicly visible.
+            - If visible, load them.
 
-     -- Then load watch later.
-        - Check wl_public for that user.
-        - If visible, load them.
-     - 
- ****/
+        -- Then load watch later.
+            - Check wl_public for that user.
+            - If visible, load them.
+        - 
+     ****/
 
     [HttpPost]
     [Authorize(Roles = "user")]
@@ -515,6 +515,61 @@ public class HomeController : Controller
 
 
         return Json(new { movies = whl_obj });
+    }
+
+
+
+
+
+
+    /**
+        - POST method.
+        - post a review
+    
+    **/
+
+    [HttpPost]
+    [Authorize(Roles = "user")]
+    public IActionResult PostReview([FromBody] ReviewInputModel model, [FromHeader(Name = "Authorization")] string token)
+    {
+        int my_id = MyIdFromToken(token);
+
+        if (!ModelState.IsValid)
+            return Json(new HttpResponse(401, "Invalid input with model").toJson());
+
+        FunctionResponse response = new ReviewService().AddReview(my_id, model.Mid, model.Review, model.Rating);
+
+        if (!response.status)
+            return Json(new HttpResponse(401, response.value).toJson());
+
+        return Json(new HttpResponse(200, response.value).toJson());
+    }
+
+
+    /**
+        - GET method.
+        - Get reviews of the movie.
+    
+    **/
+
+    [Authorize(Roles = "user")]
+    public IActionResult GetAllReviews(int mvi)
+    {
+        return Json(new { reviews = new ReviewService().GetReviews(mvi) });
+    }
+
+
+
+    /**
+        - GET method.
+        - Get reviews of the movie.
+    
+    **/
+
+    [Authorize(Roles = "user")]
+    public IActionResult GetAvgRating(int mvi)
+    {
+        return Json(new { ratings = new ReviewService().CalculateAverageRating(mvi) });
     }
 
 
