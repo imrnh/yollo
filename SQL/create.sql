@@ -83,9 +83,9 @@ create table parental_control(
 );
 
 create table prntlctrl_allowed_genres(
+	id SERIAL PRIMARY KEY,
 	user_id INTEGER REFERENCES users(id),
 	genre_id INTEGER REFERENCES genre(id),
-	PRIMARY KEY(user_id)
 );
 
 create table watch_history(

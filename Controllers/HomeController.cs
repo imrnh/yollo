@@ -40,9 +40,12 @@ public class HomeController : Controller
     [Authorize(Roles = "user")]
     public IActionResult ParentalControl([FromHeader(Name = "Authorization")] string token, [FromBody] ParentalControlInputModel pctrl_model)
     {
+        if(!ModelState.IsValid)
+            return Json(new { error = "Model state is not valid" });
+
         int my_id = MyIdFromToken(token);
-        bool parentlToggled = new ParentalControlService().ToggleParentalControl(my_id, pctrl_model.Activate, pctrl_model.Password, pctrl_model.Agelimit, pctrl_model.Genres);
-        return Json(new {message= $"Parental control {(pctrl_model.Activate? true : false)}"});
+        FunctionResponse message = new ParentalControlService().ToggleParentalControl(my_id, pctrl_model.Activate, pctrl_model.Password, pctrl_model.Agelimit, pctrl_model.Genres);
+        return Json(new {message= message.value});
     }
 
 
