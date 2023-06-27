@@ -34,7 +34,7 @@ public class AuthController : Controller
         //generate token if succesfully created
         var token = GenerateJSONWebToken(model.Email, false); //admin can only register. So it is always false for signup method.
 
-        return Json(new { generated_token = token });
+        return Json(new HttpResponse(200, token).toJson());
     }
 
 
@@ -53,7 +53,7 @@ public class AuthController : Controller
         //generate token if succesfully created
         var token = GenerateJSONWebToken(model.Email, response.value); //response contain isAdmin as value
 
-        return Json(new { generated_token = token });
+        return Json(new HttpResponse(200, token).toJson());
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
