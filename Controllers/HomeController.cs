@@ -20,10 +20,38 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        ReadMoviesService readMoviesService = new ReadMoviesService();
-        List<MovieModel> movies = readMoviesService.ReadMovies(6);
-
+        List<MovieModel> movies = new ReadMoviesService().ReadMovies(6);
         return Json(new { all_movies = movies });
+    }
+
+
+
+    /****
+     * 
+     * GET method.
+     * Read all the genre names available.
+     * 
+     * ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult AllGenres()
+    {
+        List<GenreModel> genres = new ReadMoviesService().ReadGenres();
+        return Json(new { genres = genres });
+    }
+
+    /****
+     * 
+     * POST method.
+     * Read all the genre names available.
+     * 
+     * ****/
+
+    [Authorize(Roles = "user")]
+    public IActionResult GenreIdToName([FromBody] GenreIdInputModel gmodel)
+    {
+        FunctionResponse response = new ReadMoviesService().GenreNameFromId(gmodel.Id);
+        return Json(new { genre_name = response.value });
     }
 
 
@@ -46,6 +74,20 @@ public class HomeController : Controller
         int my_id = MyIdFromToken(token);
         FunctionResponse message = new ParentalControlService().ToggleParentalControl(my_id, pctrl_model.Activate, pctrl_model.Password, pctrl_model.Agelimit, pctrl_model.Genres);
         return Json(new { message = message.value });
+    }
+
+
+    /**
+    - GET method.
+    - Check if parental control active or not.
+
+**/
+
+    [Authorize(Roles = "user")]
+    public IActionResult PctrlActiveStatus([FromHeader(Name = "Authorization")] string token)
+    {
+        int my_id = MyIdFromToken(token);
+        return Json(new { pctrl_status = new ParentalControlService().CheckParentalControlActive(my_id) });
     }
 
 
@@ -555,21 +597,21 @@ public class HomeController : Controller
     [Authorize(Roles = "user")]
     public IActionResult GetAllReviews(int mvi)
     {
-        return Json(new { reviews = new ReviewService().GetReviews(mvi)});
+        return Json(new { reviews = new ReviewService().GetReviews(mvi) });
     }
 
 
 
     /**
         - GET method.
-        - Get reviews of the movie.
+        - Get average rating count for movie.
     
     **/
 
     [Authorize(Roles = "user")]
     public IActionResult GetAvgRating(int mvi)
     {
-        return Json(new { ratings = new ReviewService().CalculateAverageRating(mvi)});
+        return Json(new { ratings = new ReviewService().CalculateAverageRating(mvi) });
     }
 
 

@@ -5,10 +5,14 @@ using System;
 public class AMovieServices
 {
     private string _connectionString;
-    public AMovieServices()
+    public AMovieServices(string _connectionString = null)
     {
         DotNetEnv.Env.Load();
         this._connectionString = Env.GetString("CONNECTION_STRING");
+
+        if(_connectionString != null){
+            this._connectionString = _connectionString;
+        }
     }
 
 

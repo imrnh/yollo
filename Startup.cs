@@ -35,6 +35,18 @@ public class Startup
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("yollo@yollo87787878"))
             };
         });
+        
+        
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowLocalhost",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000") // Update with your Next.js app's URL
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+        });
 
     }
 
@@ -45,6 +57,7 @@ public class Startup
         app.UseStaticFiles();
 
         app.UseRouting();
+        app.UseCors("AllowLocalhost");
 
         app.UseAuthentication();
         app.UseAuthorization();

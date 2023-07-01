@@ -1,11 +1,11 @@
 public class HttpResponse{
     public int status{get; set;}
-    public string message {get; set;}
+    public dynamic message {get; set;}
 
     public HttpResponse(){
 
     }
-    public HttpResponse(int status, string message){
+    public HttpResponse(int status, dynamic message){
         this.message = message;
         this.status = status;
     }

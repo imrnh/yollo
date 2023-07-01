@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/ubuntu/Desktop/Netflix/api/Netflix.csproj": {}
+    "/home/ubuntu/Desktop/YolloFront/api/Netflix.csproj": {}
   },
   "projects": {
-    "/home/ubuntu/Desktop/Netflix/api/Netflix.csproj": {
+    "/home/ubuntu/Desktop/YolloFront/api/Netflix.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/ubuntu/Desktop/Netflix/api/Netflix.csproj",
+        "projectUniqueName": "/home/ubuntu/Desktop/YolloFront/api/Netflix.csproj",
         "projectName": "Netflix",
-        "projectPath": "/home/ubuntu/Desktop/Netflix/api/Netflix.csproj",
+        "projectPath": "/home/ubuntu/Desktop/YolloFront/api/Netflix.csproj",
         "packagesPath": "/home/ubuntu/.nuget/packages/",
-        "outputPath": "/home/ubuntu/Desktop/Netflix/api/obj/",
+        "outputPath": "/home/ubuntu/Desktop/YolloFront/api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/ubuntu/.nuget/NuGet/NuGet.Config"
@@ -49,6 +49,10 @@
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[7.0.8, )"
+            },
+            "Microsoft.AspNetCore.Cors": {
+              "target": "Package",
+              "version": "[2.2.0, )"
             },
             "Microsoft.Data.Sqlite": {
               "target": "Package",

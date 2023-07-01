@@ -1,0 +1,858 @@
+{
+	"info": {
+		"_postman_id": "71c8756c-17c8-4073-b785-fe7f9c5ff497",
+		"name": "Yollo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28166184"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Add Genre",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_ADMIN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Animation\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/admin/addgenre",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"admin",
+								"addgenre"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Movie",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_ADMIN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\n     \"title\": \"WALL-E\",\n     \"description\": \"A machine responsible for cleaning a waste-covered Earth meets another robot and falls in love with her. Together, they set out on a journey that will alter the fate of mankind.\",\n     \"genres\": [1, 78],\n     \"publishers\": [14],\n     \"publishedat\": \"2008-06-27\",\n     \"agelimit\": 5,\n     \"bannerurl\": \"https://images.pexels.com/photos/2103864/pexels-photo-2103864.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\n     \"moviefiles\": [\"https://youtu.be/CZ1CATNbXg0\"],\n     \"noofepisodes\": 1,\n     \"isseries\": false\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/admin/addmovieorseries",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"admin",
+								"addmovieorseries"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All genres",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_ADMIN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/admin/allgenres",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"admin",
+								"allgenres"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All publishers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_ADMIN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/admin/allpublishers",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"admin",
+								"allpublishers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Publishers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_ADMIN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n     \"name\": \"Walt Disney\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/admin/addpublisher",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"admin",
+								"addpublisher"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"hossen@gmail.com\",\n    \"password\": \"hsn\",\n    \"fullName\": \"Nayem Hossen\",\n    \"dob\": \"2008-03-06\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/signup",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@yollo.com\",\n    \"password\": \"admin_password\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/signin",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Friend",
+					"item": [
+						{
+							"name": "Make follower",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{JWT_USER}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/home/makefollower",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"home",
+										"makefollower"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Friend Watch History and watch later",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{JWT_USER}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/home/friendwatchhistorynwatchlater",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"home",
+										"friendwatchhistorynwatchlater"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Follower",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{JWT_USER}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/home/removefollower",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"home",
+										"removefollower"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search Follower",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{JWT_USER}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{HOST}}/home/searchfollower?email=hossen@gmail.com&name=Imran",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"home",
+										"searchfollower"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "hossen@gmail.com"
+										},
+										{
+											"key": "name",
+											"value": "Imran"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Load my friends",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{JWT_USER}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{HOST}}/home/loadfriends",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"home",
+										"loadfriends"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Movie Filtering",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/home/movies?genre=80&publisher=12",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"movies"
+							],
+							"query": [
+								{
+									"key": "genre",
+									"value": "80"
+								},
+								{
+									"key": "publisher",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a movie or series",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/home/watch?slug=WALL-E7M1SI5NCHV",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"watch"
+							],
+							"query": [
+								{
+									"key": "slug",
+									"value": "WALL-E7M1SI5NCHV"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Watch History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/home/watchhistory",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"watchhistory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Watch Later",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/home/watchhistory",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"watchhistory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trigger watch history or watch later",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/home/triggerwhl?flag=wl&b=true",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"triggerwhl"
+							],
+							"query": [
+								{
+									"key": "flag",
+									"value": "wl"
+								},
+								{
+									"key": "b",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add movie to watch history",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieid\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/home/addmovietowatchhistory",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"addmovietowatchhistory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add movie to watch later",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieid\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/home/addmovietowatchlater",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"addmovietowatchlater"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove movie from watch history",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieid\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/home/deletemoviefromwatchlater",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"deletemoviefromwatchlater"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add movie to watch later Copy 2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieid\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/home/addmovietowatchlater",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"addmovietowatchlater"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Movies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/home/searchmovies?q=er",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"searchmovies"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "er"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Parental Control",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"activate\": false,\n    \"password\": \"parental_control_password\",\n    \"agelimit\": 2,\n    \"genres\": [1, 78, 80]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/home/parentalcontrol",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"parentalcontrol"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new review to a movie",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mid\": 4,\n    \"review\": \"I recently watched this movie like 2 months ago,before I watched it,I thought this movie was garbage,even though I haven't seen it,I mainly thought that because  some people  I know don't like this movie.But around like 4 months ago,I felt like this movie got more and more praise,so I decided to watch it.\",\n    \"rating\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/home/postreview",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"postreview"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Reviews of a movie",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mid\": 4,\n    \"review\": \"I recently watched this movie like 2 months ago,before I watched it,I thought this movie was garbage,even though I haven't seen it,I mainly thought that because  some people  I know don't like this movie.But around like 4 months ago,I felt like this movie got more and more praise,so I decided to watch it.\",\n    \"rating\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/home/getallreviews",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"getallreviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get average rating count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_USER}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/home/getavgrating?mvi=4",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"home",
+								"getavgrating"
+							],
+							"query": [
+								{
+									"key": "mvi",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}admin/",
+					"host": [
+						"{{HOST}}admin"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

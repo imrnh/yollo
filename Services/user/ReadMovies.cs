@@ -1,5 +1,6 @@
 using Npgsql;
 using DotNetEnv;
+using System.Linq;
 
 
 public class ReadMoviesService
@@ -62,7 +63,8 @@ public class ReadMoviesService
                             DateTime PublishedAt = (DateTime)reader["published_at"];
                             int AgeLimit = (int)reader["age_limit"];
                             string BannerUrl = (string)reader["banner_url"];
-                            List<string> movie_files = new List<string>((string[])reader["movie_files"]);
+                            var movie_files_array = (string[])reader["movie_files"];
+                            List<string> movie_files = movie_files_array.ToList();
                             int NumberOfEpisodes = (int)reader["no_of_episodes"];
                             bool IsSeries = (bool)reader["isSeries"];
 
@@ -103,45 +105,58 @@ public class ReadMoviesService
         }
     }
 
-    private List<int> FetchMovieGenres(int id, NpgsqlConnection connection)
+    private List<int> FetchMovieGenres(int id)
     {
-        string sql = "SELECT * FROM movie_genres WHERE movie_id = @movieId";
-
         List<int> genre_ids = new List<int>();
-
-        using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
+        using (var connection = new NpgsqlConnection(this._connectionString))
         {
-            command.Parameters.AddWithValue("@movieId", id);
+            connection.Open();
+            string sql = "SELECT * FROM movie_genres WHERE movie_id = @movieId";
 
-            using (NpgsqlDataReader reader = command.ExecuteReader())
+
+
+            using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
             {
-                while (reader.Read())
+                command.Parameters.AddWithValue("@movieId", id);
+
+                using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
-                    int genreId = reader.GetInt32(reader.GetOrdinal("genre_id"));
-                    genre_ids.Add(genreId);
+                    while (reader.Read())
+                    {
+                        int genreId = reader.GetInt32(reader.GetOrdinal("genre_id"));
+                        genre_ids.Add(genreId);
+                    }
                 }
             }
+            connection.Close();
         }
 
         return genre_ids;
     }
 
-    private List<int> FetchMoviePublishers(int id, NpgsqlConnection connection)
+    private List<int> FetchMoviePublishers(int id)
     {
-        string sql = "SELECT * FROM movie_publishers WHERE movie_id = @movieId";
+
 
         List<int> publishers_ids = new List<int>();
 
-        using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
-        {
-            command.Parameters.AddWithValue("@movieId", id);
 
-            using (NpgsqlDataReader reader = command.ExecuteReader())
+        using (var connection = new NpgsqlConnection(this._connectionString))
+        {
+            connection.Open();
+            string sql = "SELECT * FROM movie_publishers WHERE movie_id = @movieId";
+
+            using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
             {
-                while (reader.Read())
+                command.Parameters.AddWithValue("@movieId", id);
+
+                using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
-                    int publihser_id = reader.GetInt32(reader.GetOrdinal("publisher_id"));
-                    publishers_ids.Add(publihser_id);
+                    while (reader.Read())
+                    {
+                        int publihser_id = reader.GetInt32(reader.GetOrdinal("publisher_id"));
+                        publishers_ids.Add(publihser_id);
+                    }
                 }
             }
         }
@@ -154,9 +169,6 @@ public class ReadMoviesService
 
     public List<MovieModel> ReadMovies(int limit = 100)
     {
-
-
-
         List<MovieModel> movie_list = new List<MovieModel>();
 
         int _limit_counter = 1;
@@ -179,15 +191,16 @@ public class ReadMoviesService
                         DateTime publishedAt = reader.GetDateTime(reader.GetOrdinal("published_at"));
                         int ageLimit = reader.GetInt32(reader.GetOrdinal("age_limit"));
                         string bannerUrl = reader.GetString(reader.GetOrdinal("banner_url"));
-                        List<string> movieFiles = (List<string>)reader.GetValue(reader.GetOrdinal("movie_files"));
+                        List<string> movieFiles = new List<string>((string[])reader.GetValue(reader.GetOrdinal("movie_files")));
                         int numberOfEpisodes = reader.GetInt32(reader.GetOrdinal("no_of_episodes"));
                         bool isSeries = reader.GetBoolean(reader.GetOrdinal("isSeries"));
 
                         //fetch genres
-                        List<int> genres = FetchMovieGenres(id, connection);
+                        List<int> genres = FetchMovieGenres(id);
 
                         //fetch publishers
-                        List<int> publishers = FetchMoviePublishers(id, connection);
+                        List<int> publishers = FetchMoviePublishers(id);
+
 
                         MovieModel new_movie = new MovieModel(id, title, description, genres, publishers, publishedAt, ageLimit, bannerUrl, movieFiles, numberOfEpisodes, isSeries);
                         movie_list.Add(new_movie);
@@ -233,6 +246,85 @@ public class ReadMoviesService
             }
         }
         return movies;
+    }
+
+
+    /****
+     * 
+     * Read all the genres.
+     * 
+     * ****/
+
+    public List<GenreModel> ReadGenres()
+    {
+
+        List<GenreModel> genres = new List<GenreModel>();
+
+        using (var connection = new NpgsqlConnection(this._connectionString))
+        {
+            connection.Open();
+
+            var query = "SELECT * FROM genre";
+            using (var command = new NpgsqlCommand(query, connection))
+            {
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var id = reader.GetInt32(0);
+                        var gname = reader.GetString(1);
+
+                        GenreModel gm = new GenreModel(id, gname);
+                        genres.Add(gm);
+                    }
+                }
+            }
+
+            connection.Close();
+        }
+
+        return genres;
+    }
+
+
+    /****
+    * 
+    * Read name of the genre from genre id.
+    * 
+    * ****/
+
+    public FunctionResponse GenreNameFromId(int[] g_ids)
+    {
+        using (var connection = new NpgsqlConnection(this._connectionString))
+        {
+            connection.Open();
+            List<GenreModel> genres = new List<GenreModel>();
+
+            foreach (var gid in g_ids)
+            {
+                var query = "SELECT * FROM genre where id=@GID";
+                using (var command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("GID", gid);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var id = reader.GetInt32(0);
+                            var gname = reader.GetString(1);
+                            genres.Add(new GenreModel(id, gname));
+                        }
+
+                    }
+                }
+            }
+
+            return new FunctionResponse(true, genres);
+
+            connection.Close();
+        }
+
+        return new FunctionResponse(false, null);
     }
 
 }
