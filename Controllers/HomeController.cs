@@ -18,10 +18,36 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+
+    [Authorize(Roles = "user")]
+    public IActionResult Index(int count, [FromHeader(Name = "Authorization")] string token)
     {
-        List<MovieModel> movies = new ReadMoviesService().ReadMovies(6);
-        return Json(new { all_movies = movies });
+
+        int my_id = MyIdFromToken(token);
+
+        List<Dictionary<string, dynamic>> response = new List<Dictionary<string, dynamic>>();
+
+        List<MovieModel> movies = new ReadMoviesService().ReadMovies(count);
+        FunctionResponse filtered_response = new ParentalControlService().FilterWithParentalControl(movies, my_id);
+
+        foreach (var movie in filtered_response.value)
+        {
+            //get genre names
+            int[] movie_genres = movie.genres.ToArray();
+            FunctionResponse gn_resp = new ReadMoviesService().GenreNameFromId(movie_genres);
+
+            //get rating
+            float rating = new ReviewService().CalculateAverageRating(movie.id);
+            Dictionary<string, dynamic> single_response_template = new Dictionary<string, dynamic>();
+
+            single_response_template["movie"] = movie;
+            single_response_template["genres"] = gn_resp.value;
+            single_response_template["rating"] = rating;
+
+            response.Add(single_response_template);
+        }
+
+        return Json(new { all_movies = response });
     }
 
 
@@ -140,7 +166,29 @@ public class HomeController : Controller
 
         List<MovieModel> allowed_movies = filtered_response.value;
 
-        return Json(new { movie = allowed_movies });
+
+        List<Dictionary<string, dynamic>> response = new List<Dictionary<string, dynamic>>();
+
+
+        foreach (var movie in allowed_movies)
+        {
+            //get genre names
+            int[] movie_genres = movie.genres.ToArray();
+            FunctionResponse gn_resp = new ReadMoviesService().GenreNameFromId(movie_genres);
+
+            //get rating
+            float rating = new ReviewService().CalculateAverageRating(movie.id);
+            Dictionary<string, dynamic> single_response_template = new Dictionary<string, dynamic>();
+
+            single_response_template["movie"] = movie;
+            single_response_template["genres"] = gn_resp.value;
+            single_response_template["rating"] = rating;
+
+            response.Add(single_response_template);
+        }
+
+
+        return Json(new { response = response });
     }
 
 
