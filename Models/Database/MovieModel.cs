@@ -9,15 +9,15 @@ public class MovieModel
 
     public DateTime published_at { get; set; }
 
-    public int age_limit {get; set;}
+    public int age_limit { get; set; }
 
     public string banner_url { get; set; }
 
-    public List<string> movie_files {get; set;}
+    public List<string> movie_files { get; set; }
 
-    public int no_of_episods {get; set;}
+    public int no_of_episods { get; set; }
 
-    public bool isSeries {get; set;}
+    public bool isSeries { get; set; }
 
 
     //parameterized constructor.
@@ -27,7 +27,7 @@ public class MovieModel
         this.id = id;
         this.title = name;
         this.description = description;
-        this.genres =  genres;
+        this.genres = genres;
         this.publishers = publishers;
         this.published_at = published_at;
         this.age_limit = age_limit;
@@ -37,8 +37,23 @@ public class MovieModel
     }
 
 
+    public MovieModel(int id, string name, string description, DateTime published_at, int age_limit, string banner_url, List<string> movie_files, int no_of_episods, bool isSeries)
+    {
+        this.id = id;
+        this.title = name;
+        this.description = description;
+        this.published_at = published_at;
+        this.age_limit = age_limit;
+        this.banner_url = banner_url;
+        this.movie_files = movie_files;
+        this.no_of_episods = no_of_episods;
+    }
+
+
+
     //default constructor.
-    public MovieModel(){
+    public MovieModel()
+    {
 
     }
 

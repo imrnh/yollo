@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UVX0GmeDTIlNldmw7Wq7AOZLl5Pax2Nf6EEiTYfVcAXccvWGow9ZZFoqvAP/O0/1ywHAzch4xNGNy/amWDS8jQ==",
+  "dgSpecHash": "XY0QB6bu49mJClZhGrnqOEbOfc3porS21cHS4WGfnK9rfUfXqSlXM+IqE+MioByYwk1orQkTodWVUzv++iwFkQ==",
   "success": true,
-  "projectFilePath": "/home/ubuntu/Desktop/Netflix/api/Netflix.csproj",
+  "projectFilePath": "/home/ubuntu/Desktop/YolloFront/api/Netflix.csproj",
   "expectedPackageFiles": [
     "/home/ubuntu/.nuget/packages/dotnetenv/2.5.0/dotnetenv.2.5.0.nupkg.sha512",
     "/home/ubuntu/.nuget/packages/font.awesome/5.15.4/font.awesome.5.15.4.nupkg.sha512",
