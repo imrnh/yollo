@@ -67,4 +67,57 @@ public class APublisherServices
             connection.Close();
         }
     }
+
+
+    public bool UpdatePublisherName(int id, string newName)
+    {
+        using (var connection = new NpgsqlConnection(this._connectionString))
+        {
+            connection.Open();
+
+            using (var command = new NpgsqlCommand())
+            {
+                try
+                {
+                    command.Connection = connection;
+                    command.CommandText = "UPDATE publisher SET name = @newName WHERE id = @id";
+                    command.Parameters.AddWithValue("newName", newName);
+                    command.Parameters.AddWithValue("id", id);
+
+                    command.ExecuteNonQuery();
+
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+    }
+
+    public bool DeletePublisher(int id)
+    {
+        using (var connection = new NpgsqlConnection(this._connectionString))
+        {
+            connection.Open();
+
+            using (var command = new NpgsqlCommand())
+            {
+                try
+                {
+                    command.Connection = connection;
+                    command.CommandText = "DELETE FROM publisher WHERE id = @id";
+                    command.Parameters.AddWithValue("id", id);
+
+                    command.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+    }
 }
