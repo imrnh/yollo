@@ -517,11 +517,11 @@ public class HomeController : Controller
     ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult AddMovieToWatchHistory([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
+    public IActionResult AddMovieToWatchHistory([FromHeader(Name = "Authorization")] string token, int movie_id)
     {
         int my_id = MyIdFromToken(token);
 
-        FunctionResponse response = new SavedMoviesService().SavedMovieToWatchHistory(my_id, model.MovieId);
+        FunctionResponse response = new SavedMoviesService().SavedMovieToWatchHistory(my_id, movie_id);
 
         return Json(new { response.value });
     }
@@ -561,11 +561,11 @@ public class HomeController : Controller
 ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult DeleteMovieFromWatchHistory([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
+    public IActionResult DeleteMovieFromWatchHistory([FromHeader(Name = "Authorization")] string token, int movie_id)
     {
         int my_id = MyIdFromToken(token);
 
-        FunctionResponse response = new SavedMoviesService().RemoveFromWatchHistory(my_id, model.MovieId);
+        FunctionResponse response = new SavedMoviesService().RemoveFromWatchHistory(my_id, movie_id);
 
         return Json(new { response.value });
     }
@@ -582,11 +582,11 @@ public class HomeController : Controller
 ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult DeleteMovieFromWatchLater([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
+    public IActionResult DeleteMovieFromWatchLater([FromHeader(Name = "Authorization")] string token, int movie_id)
     {
         int my_id = MyIdFromToken(token);
 
-        FunctionResponse response = new SavedMoviesService().RemoveFromWatchLater(my_id, model.MovieId);
+        FunctionResponse response = new SavedMoviesService().RemoveFromWatchLater(my_id, movie_id);
 
         return Json(new { response.value });
     }
