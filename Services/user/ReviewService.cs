@@ -43,86 +43,112 @@ public class ReviewService
         }
     }
 
-
-
-
-    /******
-    
-        - Get all the reviews for a given movie id.
-    
-    ******/
-
-    public List<ReviewModel> GetReviews(int movieId)
+    public string UserFullNameFromUid(int uid)
     {
-        List<ReviewModel> reviews = new List<ReviewModel>();
-        using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
-        {
-            connection.Open();
-
-            // Retrieve all reviews from the "review" table
-            string selectQuery = "SELECT id, user_id, movie_id, review, rating FROM review WHERE movie_id=@movieId";
-            using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
+        
+            using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("movieId", movieId);
-                using (NpgsqlDataReader reader = command.ExecuteReader())
+                connection.Open();
+
+                // Retrieve all reviews from the "review" table
+                string selectQuery = "SELECT full_name from users where id=@Id";
+                using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
                 {
-
-
-                    while (reader.Read())
+                    command.Parameters.AddWithValue("Id", uid);
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
                     {
-                        int id = reader.GetInt32(0);
-                        int userId = reader.GetInt32(1);
-                        int _movieId = reader.GetInt32(2);
-                        string reviewText = reader.GetString(3);
-                        int rating = reader.GetInt32(4);
-
-                        ReviewModel review = new ReviewModel(userId, _movieId, reviewText, rating);
-                        reviews.Add(review);
+                        while (reader.Read())
+                        {
+                            string username = reader.GetString(0);
+                            return username;
+                        }
                     }
-
-                    return reviews;
                 }
             }
+            return null;
         }
-    }
 
 
-    public float CalculateAverageRating(int movieId)
-    {
-        using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
+
+
+        /******
+
+            - Get all the reviews for a given movie id.
+
+        ******/
+
+        public List<ReviewModel> GetReviews(int movieId)
         {
-            connection.Open();
-
-            // Retrieve all ratings for the given movie from the "review" table
-            string selectQuery = "SELECT rating FROM review WHERE movie_id = @movieId";
-            using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
+            List<ReviewModel> reviews = new List<ReviewModel>();
+            using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("movieId", movieId);
+                connection.Open();
 
-                using (NpgsqlDataReader reader = command.ExecuteReader())
+                // Retrieve all reviews from the "review" table
+                string selectQuery = "SELECT id, user_id, movie_id, review, rating FROM review WHERE movie_id=@movieId";
+                using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
                 {
-                    int totalRatings = 0;
-                    int sumRatings = 0;
+                    command.Parameters.AddWithValue("movieId", movieId);
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
 
-                    
-                    while (reader.Read())
-                    {
-                        int rating = reader.GetInt32(0);
-                        sumRatings += rating;
-                        totalRatings++;
-                    }
 
-                    if (totalRatings > 0)
-                    {
-                        float averageRating = (float)sumRatings / totalRatings;
-                        return averageRating;
-                    }
-                    else
-                    {
-                        return 0.0f;
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32(0);
+                            int userId = reader.GetInt32(1);
+                            int _movieId = reader.GetInt32(2);
+                            string reviewText = reader.GetString(3);
+                            int rating = reader.GetInt32(4);
+
+                            ReviewModel review = new ReviewModel(userId, _movieId, reviewText, rating);
+                            review.user_name = this.UserFullNameFromUid(userId);
+                            reviews.Add(review);
+                        }
+
+                        return reviews;
                     }
                 }
             }
         }
+
+
+        public float CalculateAverageRating(int movieId)
+        {
+            using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Retrieve all ratings for the given movie from the "review" table
+                string selectQuery = "SELECT rating FROM review WHERE movie_id = @movieId";
+                using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
+                {
+                    command.Parameters.AddWithValue("movieId", movieId);
+
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        int totalRatings = 0;
+                        int sumRatings = 0;
+
+
+                        while (reader.Read())
+                        {
+                            int rating = reader.GetInt32(0);
+                            sumRatings += rating;
+                            totalRatings++;
+                        }
+
+                        if (totalRatings > 0)
+                        {
+                            float averageRating = (float)sumRatings / totalRatings;
+                            return averageRating;
+                        }
+                        else
+                        {
+                            return 0.0f;
+                        }
+                    }
+                }
+            }
+        }
     }
-}

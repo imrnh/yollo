@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.FileProviders;
 
 public class Startup
 {
@@ -74,6 +75,14 @@ public class Startup
         // Configure middleware and other settings
         app.UseHttpsRedirection();
         app.UseStaticFiles();
+
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+            RequestPath = "/content"
+        });
+
 
         app.UseRouting();
         app.UseCors("AllowLocalhost");

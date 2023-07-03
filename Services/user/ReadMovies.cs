@@ -67,6 +67,7 @@ public class ReadMoviesService
                             List<string> movie_files = movie_files_array.ToList();
                             int NumberOfEpisodes = (int)reader["no_of_episodes"];
                             bool IsSeries = (bool)reader["isSeries"];
+                            string slug = (string)reader["movie_slug"];
 
                             //fetch genres
                             List<GenreModel> genrs = new AMovieServices().GetGenresByMovieId(Id).value;
@@ -89,8 +90,15 @@ public class ReadMoviesService
                             }
 
                             MovieModel movie = new MovieModel(Id, Title, Description, genr_ids, publisher_ids, PublishedAt, AgeLimit, BannerUrl, movie_files, NumberOfEpisodes, IsSeries);
+                            movie.slug = slug; //setting the slug
 
-                            return new FunctionResponse(true, movie);
+                            Dictionary<string, dynamic> response_data = new Dictionary<string, dynamic>();
+
+                            response_data["movie"] = movie;
+                            response_data["genres"] = genrs;
+                            response_data["publishers"] = publishers;
+
+                            return new FunctionResponse(true, response_data);
 
                         }
                     }
@@ -194,6 +202,7 @@ public class ReadMoviesService
                         List<string> movieFiles = new List<string>((string[])reader.GetValue(reader.GetOrdinal("movie_files")));
                         int numberOfEpisodes = reader.GetInt32(reader.GetOrdinal("no_of_episodes"));
                         bool isSeries = reader.GetBoolean(reader.GetOrdinal("isSeries"));
+                        string slug = reader.GetString(reader.GetOrdinal("movie_slug"));
 
                         //fetch genres
                         List<int> genres = FetchMovieGenres(id);
@@ -203,6 +212,8 @@ public class ReadMoviesService
 
 
                         MovieModel new_movie = new MovieModel(id, title, description, genres, publishers, publishedAt, ageLimit, bannerUrl, movieFiles, numberOfEpisodes, isSeries);
+                        new_movie.slug = slug;
+
                         movie_list.Add(new_movie);
                     }
                 }

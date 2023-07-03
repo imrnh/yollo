@@ -138,8 +138,9 @@ public class HomeController : Controller
         if (!response.status)
             return Json(new HttpResponse(401, response.value).toJson());
 
-        FunctionResponse filter_response = new ParentalControlService().FilterWithParentalControl(response.value, my_id);
-        return Json(new { movie = filter_response.value });
+        FunctionResponse filter_response = new ParentalControlService().FilterWithParentalControl(response.value["movie"], my_id);
+
+        return Json(new { movie = filter_response.value, genres = response.value["genres"], publishers = response.value["publishers"] });
     }
 
 
