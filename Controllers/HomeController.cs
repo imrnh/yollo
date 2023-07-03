@@ -605,14 +605,10 @@ public class HomeController : Controller
     ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult SearchFollower(string email, string name)
+    public IActionResult SearchFollower(string keyword)
     {
-        if (email == null)
-            email = "";
-        if (name == null)
-            name = "";
 
-        FunctionResponse response = new FriendService().SearchUser(email, name);
+        FunctionResponse response = new FriendService().SearchUser(keyword);
         if (!response.status)
         {
             return Json(new HttpResponse(401, response.value).toJson());
@@ -651,23 +647,31 @@ public class HomeController : Controller
 
 
     /****
-         - POST method.
+         - GET method.
          - a user id will be passed.
          - passed user will be removed from follower of the current user.
          - Current user can no longer check the follower's public contents.
      ****/
 
-    [HttpPost]
+
     [Authorize(Roles = "user")]
-    public IActionResult RemoveFollower([FromBody] FriendInputModel model, [FromHeader(Name = "Authorization")] string token)
+    public IActionResult RemoveFollower(int fid, [FromHeader(Name = "Authorization")] string token)
     {
         if (!ModelState.IsValid)
             return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
 
         int my_id = MyIdFromToken(token);
 
-        //make friend here
-        FunctionResponse response = new FriendService().RemoveFriend(my_id, model.Id);
+        //check if my friend or not.
+        List<int> my_friends = new FriendService().LoadFriendIds(my_id).value;
+
+        bool isMyFriend = my_friends.Contains(fid);
+
+        if(!isMyFriend)
+            return Json(new HttpResponse(399, "Not your friend"));
+
+        //remove here
+        FunctionResponse response = new FriendService().RemoveFriend(my_id, fid);
 
         return Json(new HttpResponse(200, response.value));
     }
