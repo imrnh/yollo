@@ -18,12 +18,73 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+
+
+    [Authorize(Roles = "user")]
+    public IActionResult Index(int count, [FromHeader(Name = "Authorization")] string token)
     {
-        List<MovieModel> movies = new ReadMoviesService().ReadMovies(6);
-        return Json(new { all_movies = movies });
+
+        int my_id = MyIdFromToken(token);
+
+        List<Dictionary<string, dynamic>> response = new List<Dictionary<string, dynamic>>();
+
+        List<MovieModel> movies = new ReadMoviesService().ReadMovies(count);
+        FunctionResponse filtered_response = new ParentalControlService().FilterWithParentalControl(movies, my_id);
+
+        foreach (var movie in filtered_response.value)
+        {
+            //get genre names
+            int[] movie_genres = movie.genres.ToArray();
+            FunctionResponse gn_resp = new ReadMoviesService().GenreNameFromId(movie_genres);
+
+            //get rating
+            float rating = new ReviewService().CalculateAverageRating(movie.id);
+            Dictionary<string, dynamic> single_response_template = new Dictionary<string, dynamic>();
+
+            single_response_template["movie"] = movie;
+            single_response_template["genres"] = gn_resp.value;
+            single_response_template["rating"] = rating;
+
+            response.Add(single_response_template);
+        }
+
+        return Json(new { all_movies = response });
     }
 
+
+
+    /***
+        - GET method.
+        - Returns personal info about a user.
+    ***/
+    [Authorize(Roles = "user")]
+    public IActionResult MyInfo([FromHeader(Name = "Authorization")] string token)
+    {
+        int my_id = MyIdFromToken(token);
+        return Json(new UserService().GetUser(my_id));
+    }
+
+    /***
+           - GET method.
+           - Returns personal info about a friend.
+       ***/
+    [Authorize(Roles = "user")]
+    public IActionResult FriendProfileInfo([FromHeader(Name = "Authorization")] string token, int fid)
+    {
+        int my_id = MyIdFromToken(token);
+
+        //check if my friend or not.
+        List<int> my_friends = new FriendService().LoadFriendIds(my_id).value;
+
+        bool isMyFriend = my_friends.Contains(fid);
+
+        if (isMyFriend)
+        {
+            return Json(new HttpResponse(200, new UserService().GetUser(fid)).toJson());
+        }
+        return Json(new HttpResponse(399, "Not your friend"));
+
+    }
 
 
     /****
@@ -112,8 +173,9 @@ public class HomeController : Controller
         if (!response.status)
             return Json(new HttpResponse(401, response.value).toJson());
 
-        FunctionResponse filter_response = new ParentalControlService().FilterWithParentalControl(response.value, my_id);
-        return Json(new { movie = filter_response.value });
+        FunctionResponse filter_response = new ParentalControlService().FilterWithParentalControl(response.value["movie"], my_id);
+
+        return Json(new { movie = filter_response.value, genres = response.value["genres"], publishers = response.value["publishers"] });
     }
 
 
@@ -140,7 +202,29 @@ public class HomeController : Controller
 
         List<MovieModel> allowed_movies = filtered_response.value;
 
-        return Json(new { movie = allowed_movies });
+
+        List<Dictionary<string, dynamic>> response = new List<Dictionary<string, dynamic>>();
+
+
+        foreach (var movie in allowed_movies)
+        {
+            //get genre names
+            int[] movie_genres = movie.genres.ToArray();
+            FunctionResponse gn_resp = new ReadMoviesService().GenreNameFromId(movie_genres);
+
+            //get rating
+            float rating = new ReviewService().CalculateAverageRating(movie.id);
+            Dictionary<string, dynamic> single_response_template = new Dictionary<string, dynamic>();
+
+            single_response_template["movie"] = movie;
+            single_response_template["genres"] = gn_resp.value;
+            single_response_template["rating"] = rating;
+
+            response.Add(single_response_template);
+        }
+
+
+        return Json(new { response = response });
     }
 
 
@@ -197,13 +281,31 @@ public class HomeController : Controller
     
     ****/
 
+
+
+    [Authorize(Roles = "user")]
+    public IActionResult WatchHistoryAndLaterStatus([FromHeader(Name = "Authorization")] string token)
+    {
+        int my_id = MyIdFromToken(token);
+        return Json(new { response = new SavedMoviesService().GetPublicSettingsForUser(my_id) });
+    }
+
+
+    [Authorize(Roles = "user")]
+    public IActionResult WatchHistoryAndLaterStatusCheckForVisitedUser(int user_id)
+    {
+        return Json(new { response = new SavedMoviesService().GetPublicSettingsForUser(user_id) });
+    }
+
     [Authorize(Roles = "user")]
     public IActionResult WatchHistory([FromHeader(Name = "Authorization")] string token)
     {
         int my_id = MyIdFromToken(token);
 
         List<int> movie_ids = new List<int>();
-        List<MovieModel> movies = new List<MovieModel>();
+
+
+        List<Dictionary<string, dynamic>> response_list = new List<Dictionary<string, dynamic>>();
 
         FunctionResponse load_resp = new SavedMoviesService().LoadWatchHistory(my_id);
         if (!load_resp.status)
@@ -216,12 +318,18 @@ public class HomeController : Controller
             FunctionResponse mv_resp = new ReadMoviesService().SingleMovie("", mvid);
             if (!mv_resp.status)
                 return Json(new HttpResponse(401, mv_resp.value).toJson());
+            Dictionary<string, dynamic> response = new Dictionary<string, dynamic>();
+            response["movie"] = mv_resp.value["movie"];
+            response["genres"] = mv_resp.value["genres"];
+            response["publishers"] = mv_resp.value["publishers"];
+            response["rating"] = new ReviewService().CalculateAverageRating(mvid);
 
-            movies.Add(mv_resp.value);
+            response_list.Add(response);
+
         }
 
 
-        return Json(new { movies = movies, me = my_id });
+        return Json(new { response = response_list, me = my_id });
     }
 
 
@@ -241,7 +349,8 @@ public class HomeController : Controller
         int my_id = MyIdFromToken(token);
 
         List<int> movie_ids = new List<int>();
-        List<MovieModel> movies = new List<MovieModel>();
+
+        List<Dictionary<string, dynamic>> response_list = new List<Dictionary<string, dynamic>>();
 
         FunctionResponse load_resp = new SavedMoviesService().LoadWatchLater(my_id);
         if (!load_resp.status)
@@ -249,17 +358,26 @@ public class HomeController : Controller
 
         movie_ids = load_resp.value; //if no errror, get all the movie ids.
 
+
+
         foreach (var mvid in movie_ids)
         {
+
             FunctionResponse mv_resp = new ReadMoviesService().SingleMovie("", mvid);
             if (!mv_resp.status)
                 return Json(new HttpResponse(401, mv_resp.value).toJson());
+            Dictionary<string, dynamic> response = new Dictionary<string, dynamic>();
 
-            movies.Add(mv_resp.value);
+            response["movie"] = mv_resp.value["movie"];
+            response["genres"] = mv_resp.value["genres"];
+            response["publishers"] = mv_resp.value["publishers"];
+            response["rating"] = new ReviewService().CalculateAverageRating(mvid);
+
+            response_list.Add(response);
+
         }
 
-
-        return Json(new { movies = movies, me = my_id });
+        return Json(new { response = response_list, me = my_id });
     }
 
 
@@ -284,6 +402,109 @@ public class HomeController : Controller
     }
 
 
+    /***
+
+    - View watch history of friend
+        
+
+        TODO:
+            - check if whl public or not.
+                - only return if public.
+
+
+    ***/
+
+
+    [Authorize(Roles = "user")]
+    public IActionResult FriendsWhlList([FromHeader(Name = "Authorization")] string token, int fid)
+    {
+        int my_id = MyIdFromToken(token);
+
+        //check if my friend or not.
+        List<int> my_friends = new FriendService().LoadFriendIds(my_id).value;
+
+        bool isMyFriend = my_friends.Contains(fid);
+
+        if (!isMyFriend)
+            return Json(new HttpResponse(399, "Not your friend"));
+
+        bool[] publicSettings = new SavedMoviesService().GetPublicSettingsForUser(fid);
+        List<Dictionary<string, dynamic>> wh_response_list = new List<Dictionary<string, dynamic>>();
+        List<Dictionary<string, dynamic>> wl_response_list = new List<Dictionary<string, dynamic>>();
+
+
+        if (publicSettings[0])  //if watch history public.
+        {
+            List<int> movie_ids = new List<int>();
+
+
+
+            FunctionResponse load_resp = new SavedMoviesService().LoadWatchHistory(fid);
+            if (!load_resp.status)
+                return Json(new HttpResponse(401, load_resp.value));
+
+            movie_ids = load_resp.value; //if no errror, get all the movie ids.
+
+
+
+            foreach (var mvid in movie_ids)
+            {
+
+                FunctionResponse mv_resp = new ReadMoviesService().SingleMovie("", mvid);
+                if (!mv_resp.status)
+                    return Json(new HttpResponse(401, mv_resp.value).toJson());
+                Dictionary<string, dynamic> response = new Dictionary<string, dynamic>();
+
+                response["movie"] = mv_resp.value["movie"];
+                response["genres"] = mv_resp.value["genres"];
+                response["publishers"] = mv_resp.value["publishers"];
+                response["rating"] = new ReviewService().CalculateAverageRating(mvid);
+
+                wh_response_list.Add(response);
+            }
+        }
+
+
+        if (publicSettings[1])  //if watch history public.
+        {
+            List<int> movie_ids = new List<int>();
+
+
+
+            FunctionResponse load_resp = new SavedMoviesService().LoadWatchHistory(fid);
+            if (!load_resp.status)
+                return Json(new HttpResponse(401, load_resp.value));
+
+            movie_ids = load_resp.value; //if no errror, get all the movie ids.
+
+
+
+            foreach (var mvid in movie_ids)
+            {
+
+                FunctionResponse mv_resp = new ReadMoviesService().SingleMovie("", mvid);
+                if (!mv_resp.status)
+                    return Json(new HttpResponse(401, mv_resp.value).toJson());
+                Dictionary<string, dynamic> response = new Dictionary<string, dynamic>();
+
+                response["movie"] = mv_resp.value["movie"];
+                response["genres"] = mv_resp.value["genres"];
+                response["publishers"] = mv_resp.value["publishers"];
+                response["rating"] = new ReviewService().CalculateAverageRating(mvid);
+
+                wh_response_list.Add(response);
+            }
+        }
+
+        Dictionary<string, dynamic> response_dict = new Dictionary<string, dynamic>();
+
+        response_dict["wh"] = wh_response_list;
+        response_dict["wl"] = wl_response_list;
+
+        return Json(new HttpResponse(200, response_dict));
+    }
+
+
 
 
     /****
@@ -296,11 +517,11 @@ public class HomeController : Controller
     ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult AddMovieToWatchHistory([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
+    public IActionResult AddMovieToWatchHistory([FromHeader(Name = "Authorization")] string token, int movie_id)
     {
         int my_id = MyIdFromToken(token);
 
-        FunctionResponse response = new SavedMoviesService().SavedMovieToWatchHistory(my_id, model.MovieId);
+        FunctionResponse response = new SavedMoviesService().SavedMovieToWatchHistory(my_id, movie_id);
 
         return Json(new { response.value });
     }
@@ -317,6 +538,7 @@ public class HomeController : Controller
     ****/
 
     [Authorize(Roles = "user")]
+    [HttpPost]
     public IActionResult AddMovieToWatchLater([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
     {
         int my_id = MyIdFromToken(token);
@@ -339,11 +561,11 @@ public class HomeController : Controller
 ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult DeleteMovieFromWatchHistory([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
+    public IActionResult DeleteMovieFromWatchHistory([FromHeader(Name = "Authorization")] string token, int movie_id)
     {
         int my_id = MyIdFromToken(token);
 
-        FunctionResponse response = new SavedMoviesService().RemoveFromWatchHistory(my_id, model.MovieId);
+        FunctionResponse response = new SavedMoviesService().RemoveFromWatchHistory(my_id, movie_id);
 
         return Json(new { response.value });
     }
@@ -360,11 +582,11 @@ public class HomeController : Controller
 ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult DeleteMovieFromWatchLater([FromHeader(Name = "Authorization")] string token, [FromBody] MovieIdInpModel model)
+    public IActionResult DeleteMovieFromWatchLater([FromHeader(Name = "Authorization")] string token, int movie_id)
     {
         int my_id = MyIdFromToken(token);
 
-        FunctionResponse response = new SavedMoviesService().RemoveFromWatchLater(my_id, model.MovieId);
+        FunctionResponse response = new SavedMoviesService().RemoveFromWatchLater(my_id, movie_id);
 
         return Json(new { response.value });
     }
@@ -383,14 +605,10 @@ public class HomeController : Controller
     ****/
 
     [Authorize(Roles = "user")]
-    public IActionResult SearchFollower(string email, string name)
+    public IActionResult SearchFollower(string keyword)
     {
-        if (email == null)
-            email = "";
-        if (name == null)
-            name = "";
 
-        FunctionResponse response = new FriendService().SearchUser(email, name);
+        FunctionResponse response = new FriendService().SearchUser(keyword);
         if (!response.status)
         {
             return Json(new HttpResponse(401, response.value).toJson());
@@ -429,23 +647,31 @@ public class HomeController : Controller
 
 
     /****
-         - POST method.
+         - GET method.
          - a user id will be passed.
          - passed user will be removed from follower of the current user.
          - Current user can no longer check the follower's public contents.
      ****/
 
-    [HttpPost]
+
     [Authorize(Roles = "user")]
-    public IActionResult RemoveFollower([FromBody] FriendInputModel model, [FromHeader(Name = "Authorization")] string token)
+    public IActionResult RemoveFollower(int fid, [FromHeader(Name = "Authorization")] string token)
     {
         if (!ModelState.IsValid)
             return Json(new HttpResponse(401, "Insertion doesn't match with the Input Model").toJson());
 
         int my_id = MyIdFromToken(token);
 
-        //make friend here
-        FunctionResponse response = new FriendService().RemoveFriend(my_id, model.Id);
+        //check if my friend or not.
+        List<int> my_friends = new FriendService().LoadFriendIds(my_id).value;
+
+        bool isMyFriend = my_friends.Contains(fid);
+
+        if(!isMyFriend)
+            return Json(new HttpResponse(399, "Not your friend"));
+
+        //remove here
+        FunctionResponse response = new FriendService().RemoveFriend(my_id, fid);
 
         return Json(new HttpResponse(200, response.value));
     }

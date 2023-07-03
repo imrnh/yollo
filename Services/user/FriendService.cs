@@ -26,17 +26,19 @@ public class FriendService
         - Search a user with matching email or almost similar fullname.
     */
 
-    public FunctionResponse SearchUser(string email = "", string fullname = "")
+    public FunctionResponse SearchUser(string keyword)
     {
 
         using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
 
-            using (var command = new NpgsqlCommand("SELECT id, full_name, email FROM users WHERE (email = @Email OR full_name LIKE @Name) AND isAdmin = false", connection))
+            string query = "SELECT id, full_name, email FROM users WHERE email = @Email AND isAdmin=false";
+
+            using (var command = new NpgsqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@Email", email);
-                command.Parameters.AddWithValue("@Name", $"%{fullname}%");
+
+                command.Parameters.AddWithValue("Email", keyword);
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -121,6 +123,35 @@ public class FriendService
     }
 
 
+    public FunctionResponse LoadFriendIds(int my_id)
+    {
+        List<int> friends = new List<int>();
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string query = "SELECT user2 FROM friend WHERE user1 = @User1Id";
+
+            using (var command = new NpgsqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("User1Id", my_id);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int user2Id = reader.GetInt32(0);
+                        friends.Add(user2Id);
+                    }
+
+                    return new FunctionResponse(true, friends);
+                }
+            }
+        }
+        return new FunctionResponse(false, null);
+    }
+
+
     public FunctionResponse RemoveFriend(int my_id, int friend_id)
     {
         try
@@ -140,7 +171,9 @@ public class FriendService
                 }
                 return new FunctionResponse(true, "Friend removed");
             }
-        }catch(Exception e){
+        }
+        catch (Exception e)
+        {
             return new FunctionResponse(false, e.Message);
         }
     }
@@ -156,7 +189,7 @@ public class FriendService
         {
             connection.Open();
 
-            string query = "SELECT full_name, email FROM users WHERE id = ANY(@Ids)";
+            string query = "SELECT id, full_name, email FROM users WHERE id = ANY(@Ids)";
 
             using (var command = new NpgsqlCommand(query, connection))
             {
@@ -166,9 +199,10 @@ public class FriendService
                 {
                     while (reader.Read())
                     {
-                        string fullName = reader.GetString(0);
-                        string email = reader.GetString(1);
-                        users.Add(new User { FullName = fullName, Email = email });
+                        int id = reader.GetInt32(0);
+                        string fullName = reader.GetString(1);
+                        string email = reader.GetString(2);
+                        users.Add(new User { Id = id, FullName = fullName, Email = email });
                     }
                 }
             }
@@ -182,6 +216,7 @@ public class FriendService
 
 public class User
 {
+    public int Id { get; set; }
     public string FullName { get; set; }
     public string Email { get; set; }
 }

@@ -4,6 +4,7 @@ public class ReviewModel{
     public int movie_id {get; set;}
     public string review{get; set;}
     public int rating {get; set;}
+    public string user_name {get; set;}
 
     public ReviewModel( int user_id, int movie_id, string review, int rating){
         this.user_id = user_id;

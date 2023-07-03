@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.FileProviders;
 
 public class Startup
 {
@@ -19,12 +21,30 @@ public class Startup
     {
         services.AddControllersWithViews();
 
+        services.Configure<IISServerOptions>(options =>
+        {
+            options.MaxRequestBodySize = int.MaxValue;
+        });
+
+        services.Configure<FormOptions>(options =>
+        {
+            options.MultipartBodyLengthLimit = long.MaxValue;
+        });
+
+
+        services.Configure<Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions>(options =>
+        {
+            options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(2);
+        });
+
         // Register YourDbContext and ProductRepository as services
         services.AddScoped<NetflixDbAccessModel>();
         services.AddScoped<LoadGenresController>();
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options=>{
-            options.TokenValidationParameters = new TokenValidationParameters{
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
@@ -35,14 +55,14 @@ public class Startup
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("yollo@yollo87787878"))
             };
         });
-        
-        
+
+
         services.AddCors(options =>
         {
             options.AddPolicy("AllowLocalhost",
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000") // Update with your Next.js app's URL
+                    builder.WithOrigins("http://localhost:3000").WithOrigins("http://localhost:3000/test/") // Update with your Next.js app's URL
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -56,8 +76,17 @@ public class Startup
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+            RequestPath = "/content"
+        });
+
+
         app.UseRouting();
         app.UseCors("AllowLocalhost");
+        app.UseCors();
 
         app.UseAuthentication();
         app.UseAuthorization();

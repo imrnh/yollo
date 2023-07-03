@@ -91,7 +91,7 @@ create table prntlctrl_allowed_genres(
 create table watch_history(
 	id serial,
 	user_id integer,
-	movie_id integer,
+	movie_id integer UNIQUE,
 	primary key(id),
 	foreign key(user_id) references users(id),
 	foreign key(movie_id) references movie(id)
@@ -100,7 +100,7 @@ create table watch_history(
 create table watch_later(
 	id serial,
 	user_id integer,
-	movie_id integer,
+	movie_id integer UNIQUE,
 	created_at date default current_timestamp, -- ei onusra order kore data return kroabo query diyei. Model e creted_at ar lagbena
 	primary key(id),
 	foreign key(user_id) references users(id),

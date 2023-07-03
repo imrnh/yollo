@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using DotNetEnv;
 using Npgsql;
+using System.Text;
 
 public class AuthenticationService
 {
@@ -29,11 +30,11 @@ public class AuthenticationService
 
                 command.CommandText = "INSERT INTO users (email, password, full_name, dob) VALUES (@email, @password, @fname, @dob)";
 
-                string hashedPassword = PasswordHasher.HashPassword(password);
 
+                string hashedPassword = PasswordHelper.HashPassword(password);
 
                 command.Parameters.AddWithValue("email", email);
-                command.Parameters.AddWithValue("password", password); //perform hash later. current hash function is not working properly.
+                command.Parameters.AddWithValue("password", hashedPassword); //perform hash later. current hash function is not working properly.
                 command.Parameters.AddWithValue("fname", fname);
                 command.Parameters.AddWithValue("dob", dob);
 
@@ -79,13 +80,13 @@ public class AuthenticationService
                         bool isAdmin = Convert.ToBoolean(reader["isAdmin"]);
 
                         //perform hashing later.
+                        bool isPasswordCorrect = PasswordHelper.VerifyPassword(user_input_password, hashed_password);
 
-                        bool hashCheckResult = hashed_password == user_input_password; // PasswordHasher.VerifyPassword(user_input_password, hashed_password);
 
-                        if (!hashCheckResult)
+                        if (!isPasswordCorrect)
                             return new FunctionResponse(false, "Invalid password");
 
-                        return new FunctionResponse(true, isAdmin);
+                        return new FunctionResponse(true, isAdmin); //return that logged in and if the user is admin or not.
                     }
                 }
                 catch (Exception e)
@@ -148,5 +149,35 @@ public class AuthenticationService
             }
         }
         return new FunctionResponse(false, null);
+    }
+}
+
+
+class PasswordHelper
+{
+    public static string HashPassword(string password)
+    {
+        using (var sha256 = SHA256.Create())
+        {
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+            byte[] hashedBytes = sha256.ComputeHash(passwordBytes);
+            return ConvertToHexString(hashedBytes);
+        }
+    }
+
+    private static string ConvertToHexString(byte[] bytes)
+    {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            builder.Append(bytes[i].ToString("x2"));
+        }
+        return builder.ToString();
+    }
+
+    public static bool VerifyPassword(string password, string hashedPassword)
+    {
+        string hashedInputPassword = HashPassword(password);
+        return string.Equals(hashedInputPassword, hashedPassword);
     }
 }

@@ -329,3 +329,4 @@
 /home/ubuntu/Desktop/YolloFront/api/obj/Debug/net7.0/Netflix.pdb
 /home/ubuntu/Desktop/YolloFront/api/obj/Debug/net7.0/Netflix.genruntimeconfig.cache
 /home/ubuntu/Desktop/YolloFront/api/obj/Debug/net7.0/ref/Netflix.dll
+/home/ubuntu/Desktop/YolloFront/api/bin/Debug/net7.0/Newtonsoft.Json.dll

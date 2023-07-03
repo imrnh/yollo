@@ -28,7 +28,7 @@ public class AGenreServices
                         int Id = Convert.ToInt32(reader["id"]);
                         string Name = reader["name"].ToString();
 
-                        
+
 
                         GenreModel genre = new GenreModel(Id, Name);
                         genres.Add(genre);
@@ -68,4 +68,56 @@ public class AGenreServices
         }
     }
 
+
+    public bool UpdateGenreName(int id, string newName)
+    {
+        using (var connection = new NpgsqlConnection(this._connectionString))
+        {
+            connection.Open();
+
+            using (var command = new NpgsqlCommand())
+            {
+                try
+                {
+                    command.Connection = connection;
+                    command.CommandText = "UPDATE genre SET name = @newName WHERE id = @id";
+                    command.Parameters.AddWithValue("newName", newName);
+                    command.Parameters.AddWithValue("id", id);
+
+                    command.ExecuteNonQuery();
+
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+    }
+
+    public bool DeleteGenre(int id)
+    {
+        using (var connection = new NpgsqlConnection(this._connectionString))
+        {
+            connection.Open();
+
+            using (var command = new NpgsqlCommand())
+            {
+                try
+                {
+                    command.Connection = connection;
+                    command.CommandText = "DELETE FROM genre WHERE id = @id";
+                    command.Parameters.AddWithValue("id", id);
+
+                    command.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+    }
 }

@@ -19,6 +19,8 @@ public class MovieModel
 
     public bool isSeries { get; set; }
 
+    public string slug {get; set;}
+
 
     //parameterized constructor.
 
