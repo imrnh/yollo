@@ -92,7 +92,6 @@ public class ReviewService
                     using (NpgsqlDataReader reader = command.ExecuteReader())
                     {
 
-
                         while (reader.Read())
                         {
                             int id = reader.GetInt32(0);
@@ -141,7 +140,7 @@ public class ReviewService
                         if (totalRatings > 0)
                         {
                             float averageRating = (float)sumRatings / totalRatings;
-                            return averageRating;
+                            return (float)Math.Round(averageRating, 1);
                         }
                         else
                         {

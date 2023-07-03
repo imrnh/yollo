@@ -18,6 +18,37 @@ public class SavedMoviesService
 
 
 
+    public bool[] GetPublicSettingsForUser(int userId)
+    {
+        bool[] publicSettings = new bool[2];
+        //assigning default value as false.
+        publicSettings[0] = false;
+        publicSettings[1] = false;
+
+
+        using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string query = "SELECT wh_public, wl_public FROM whpublic WHERE user_id = @userId";
+            using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@userId", userId);
+
+                using (NpgsqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        publicSettings[0] = reader.GetBoolean(0);
+                        publicSettings[1] = reader.GetBoolean(1);
+                    }
+                }
+            }
+        }
+
+        return publicSettings; //wh, wl
+    }
+
 
     public FunctionResponse SavedMovieToWatchHistory(int userId, int movieId)
     {
@@ -59,7 +90,7 @@ public class SavedMoviesService
                     command.Parameters.AddWithValue("userId", userId);
                     command.Parameters.AddWithValue("movieId", movieId);
 
-                    int rowsAffected = command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
                     return new FunctionResponse(true, "Movie added to watch later");
                 }
             }
@@ -80,7 +111,7 @@ public class SavedMoviesService
 
             try
             {
-                string query = "SELECT movie_id FROM watch_history WHERE user_id = @userId";
+                string query = "SELECT distinct movie_id FROM watch_history WHERE user_id = @userId";
                 using (var command = new NpgsqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("userId", user_id);
@@ -113,7 +144,7 @@ public class SavedMoviesService
 
             try
             {
-                string query = "SELECT movie_id FROM watch_later WHERE user_id = @userId ORDER BY created_at";
+                string query = "SELECT distinct movie_id FROM watch_later WHERE user_id = @userId";
                 using (var command = new NpgsqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("userId", user_id);
@@ -165,7 +196,7 @@ public class SavedMoviesService
 
 
 
-        public FunctionResponse RemoveFromWatchLater(int userId, int movieId)
+    public FunctionResponse RemoveFromWatchLater(int userId, int movieId)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {

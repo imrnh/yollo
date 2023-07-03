@@ -121,6 +121,35 @@ public class FriendService
     }
 
 
+    public FunctionResponse LoadFriendIds(int my_id)
+    {
+        List<int> friends = new List<int>();
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string query = "SELECT user2 FROM friend WHERE user1 = @User1Id";
+
+            using (var command = new NpgsqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("User1Id", my_id);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int user2Id = reader.GetInt32(0);
+                        friends.Add(user2Id);
+                    }
+
+                    return new FunctionResponse(true, friends);
+                }
+            }
+        }
+        return new FunctionResponse(false, null);
+    }
+
+
     public FunctionResponse RemoveFriend(int my_id, int friend_id)
     {
         try
@@ -140,7 +169,9 @@ public class FriendService
                 }
                 return new FunctionResponse(true, "Friend removed");
             }
-        }catch(Exception e){
+        }
+        catch (Exception e)
+        {
             return new FunctionResponse(false, e.Message);
         }
     }
